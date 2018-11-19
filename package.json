@@ -1,0 +1,28 @@
+{
+  "name": "cursor-locating",
+  "version": "1.0.0",
+  "description": "experiment for cursor locating",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/Crispher/cursor-locating.git"
+  },
+  "author": "Chufeng, Yu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/Crispher/cursor-locating/issues"
+  },
+  "homepage": "https://gitlab.com/Crispher/cursor-locating#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3"
+  },
+  "devDependencies": {
+    "webpack": "^4.26.0"
+  }
+}
