@@ -1,0 +1,16 @@
+# Logs
+logs
+*.logs
+
+# Compiled directory and file
+build/
+bundle.js
+
+# Dependency directory
+node_modules/
+
+# Swap files
+*.swp
+
+# Ignore DS_Store
+.DS_Store
