@@ -29,7 +29,10 @@ module.exports = {
 			{
         test : /\.js$/,
         include : SRC_DIR,
-        loader : 'babel-loader',
+				loader : 'babel-loader',
+				query: {
+					presets: ['react', 'es2015']
+				}
       }
 		],
 	},
