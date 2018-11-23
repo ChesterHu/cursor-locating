@@ -6,8 +6,7 @@ const toCSS = (style) => {
 	return {
 		opacity: opacity,
 		scale: scale,
-		transform: `translate3d(${x}px, ${y}px, 0) scale(${scale})`,
-		WebkitTransform: `translate3d(${x}px, ${y}px, 0) scale(${scale})`,
+		transform: `translate(${x}px, ${y}px) scale(${scale},${scale})`,
 	};
 };
 
@@ -19,43 +18,53 @@ export default class Ripples extends Component {
 		this.state = {
 			start: Date.now(),
 			mouse: [null, null],
-			timeStamp: null
+			timeStamp: 0,
 		};
 		this.handleMouseMove = this.handleMouseMove.bind(this);
 	}
 
 	handleMouseMove({ pageX, pageY }) {
-		console.log(pageX, pageY);
-		this.setState({
-			mouse: [pageX, pageY],
-			timeStamp: `${Date.now() - this.state.start}`
+		this.setState(() => {
+			return {
+			mouse: [pageX - 25, pageY - 25],
+			timeStamp: Date.now() - this.state.start
+			};
 		});
 	}
 
 	willLeave(styleCell) {
-		return {
-			opacity: spring(0),
-			scale: spring(2)
-		};
+		return Object.assign({}, styleCell.style, {
+			opacity: spring(0), 
+			scale: spring(1.5)});
 	}
 
 	render() {
-		const { mouse: [mouseX, mouseY], timeStamp } = this.state;
-		const styles = mouseX === null ? [] : [{
+		const { mouse, timeStamp } = this.state;
+		const styles = mouse[0] === null ? [] : [{
 			key: timeStamp,
 			style: {
 				opacity: spring(1),
 				scale: spring(0),
-				x: mouseX,
-				y: mouseY
+				x: spring(mouse[0]),
+				y: spring(mouse[1])
 			}
 		}];
-
 		return (
-			<div
-				onMouseMove={this.handleMouseMove}>
-				Ripples
-			</div>
+			<TransitionMotion willLeave={this.willLeave} styles={styles}>
+				{ripples =>
+					<div 
+						className='background'
+						onMouseMove={this.handleMouseMove}>
+						{ripples.map(({ key, style }) => 
+							<div 
+								key={key}
+								className='ripple'
+								style={toCSS(style)}>
+							</div>
+						)}
+					</div>
+				}
+			</TransitionMotion>
 		);
 	}
 };
