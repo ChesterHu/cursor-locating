@@ -43,8 +43,8 @@ export default class Ripples extends Component {
 
 	willLeave(styleCell) {
 		return Object.assign({}, styleCell.style, {
-			opacity: spring(0), 
-			scale: spring(1.5)});
+			opacity: spring(0, config), 
+			scale: spring(1.5, config)});
 	}
 	
 	render() {
