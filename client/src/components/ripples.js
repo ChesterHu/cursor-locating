@@ -11,6 +11,7 @@ const toCSS = (style) => {
 };
 
 const config = { stiffness: 60, damping: 15 };
+const triggerTime = { begin: 0, end: 4000 };
 
 export default class Ripples extends Component {
 	constructor(props) {
@@ -21,6 +22,14 @@ export default class Ripples extends Component {
 			timeStamp: 0,
 		};
 		this.handleMouseMove = this.handleMouseMove.bind(this);
+	}
+	
+	isTriggered() {
+		const timeElapsed = Date.now() - this.state.start;
+		if (timeElapsed > triggerTime.begin && timeElapsed < triggerTime.end) {
+			return spring(1);
+		}
+		return 0;
 	}
 
 	handleMouseMove({ pageX, pageY }) {
@@ -37,13 +46,13 @@ export default class Ripples extends Component {
 			opacity: spring(0), 
 			scale: spring(1.5)});
 	}
-
+	
 	render() {
-		const { mouse, timeStamp } = this.state;
+		const { mouse, timeStamp, start } = this.state;
 		const styles = mouse[0] === null ? [] : [{
 			key: timeStamp,
 			style: {
-				opacity: spring(1),
+				opacity: this.isTriggered(),
 				scale: spring(0),
 				x: spring(mouse[0]),
 				y: spring(mouse[1])
