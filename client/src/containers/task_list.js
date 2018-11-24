@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 class TaskList extends Component {
 	render() {
+		console.log(this.props.tasks);
 		return (
 			<div>
 				task List
@@ -11,9 +12,9 @@ class TaskList extends Component {
 	}
 };
 
-function mapStateToProps(state) {
+function mapStateToProps({ tasks, activeTask}) {
 	return {
-		tasks: state.tasks
+		tasks, activeTask
 	};
 }
 
