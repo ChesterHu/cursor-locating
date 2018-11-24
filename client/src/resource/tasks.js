@@ -2,31 +2,31 @@ var img_path = './'
 
 export const technique_settings = [
     {
-        env_id = "e1",
+        env_id : "e1",
         trigger : "none",
         visual_effect : "none",
     },
 
     {
-        env_id = "e2",
+        env_id : "e2",
         trigger : "shake",
         visual_effect : "enlarge",
     },
 
     {
-        env_id = "e3",
+        env_id : "e3",
         trigger : "ctrl", 
         visual_effect : "enlarge",
     },
 
     {
-        env_id = "e4",
+        env_id : "e4",
         trigger : "shake",
         visual_effect : "sonar",
     },
 
     {
-        env_id = "e5",
+        env_id : "e5",
         trigger : "ctrl",
         visual_effect : "sonar",
     }
