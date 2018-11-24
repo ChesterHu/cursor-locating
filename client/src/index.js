@@ -9,7 +9,7 @@ import reducer from './reducers/index';
 const store = createStore(reducer);
 
 ReactDOM.render(
-	<div> 
+	<Provider store={store}> 
 		<App />
-	</div>,
+	</Provider>,
 	document.getElementById('root'));
