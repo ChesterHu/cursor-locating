@@ -1,15 +1,33 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-const toCSS = () => {
+import { clickTarget } from '../actions/index';
+
+const toCSS = ({ target }) => {
 	return {
 		position: 'absolute',
-		top: `${50}%`,
-		left: `${50}%`
+		top: target.top,
+		left: target.left
 	};
 };
 
-export default function(props) {
+function target(props) {
 	return (
-		<button style={toCSS()}>Target</button>
+		<button 
+			style={toCSS(props.task)}
+			onClick={props.clickTarget}>
+			Target
+		</button>
 	);
 }
+
+function mapStateToProps({ tasks, activeTask }) {
+	return { task: tasks[activeTask] };
+}
+
+function mapDispatchToProps(dispatch) {
+	return bindActionCreators({ clickTarget }, dispatch); 
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(target);
