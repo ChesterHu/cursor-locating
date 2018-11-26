@@ -7,7 +7,6 @@ import TaskDetail from '../containers/task_detail';
 export default function() {
 	return (
 		<div>
-			<Ripples />
 			<TaskList />
 			<TaskDetail />
 		</div>	
