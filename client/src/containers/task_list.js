@@ -5,7 +5,6 @@ class TaskList extends Component {
 	render() {
 		return (
 			<div>
-				task List
 			</div>
 		);
 	}
