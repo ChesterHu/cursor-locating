@@ -41,20 +41,29 @@ export const tasks = [
         start : [0.7, 0.9],
         // a rectangular region specified by the following coordinates
         // [x0, x1, y0, y1]
-        target : [0.1, 0.12, 0.2, 0.22]
+			target: {
+				top: '10%',
+				left: '12%',
+			}
     }, 
 
 	{ 
 		task_id : "t2", 
 		img : img_path + "2.jpg", 
 		start : [0.30, 0.50], 
-		target : [0.20, 0.22, 0.90, 0.92] 
+		target: {
+			top: '20%',
+			left: '22%'
+		}
 	}, 
 	{ 
 		task_id : "t3", 
 		img : img_path + "3.jpg", 
 		start : [0.40, 0.80], 
-		target : [0.10, 0.12, 0.90, 0.92] 
+		target: {
+			top: '10%',
+			left: '12%'
+		}
 	}, 
     
 ]
