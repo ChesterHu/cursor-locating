@@ -12,7 +12,6 @@ const toCSS = (task) => {
 
 class TaskDetail extends Component {
 	render() {
-		console.log(this.props.task);
 		return (
 			<div style={toCSS(this.props.task)}>
 				TaskDetail
