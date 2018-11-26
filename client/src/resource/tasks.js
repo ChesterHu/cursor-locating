@@ -1,4 +1,7 @@
-var img_path = './'
+var img_path = '../resource/img/'
+import img1 from './img/1.jpg';
+import img2 from './img/2.jpg';
+import img3 from './img/3.jpg';
 
 export const technique_settings = [
     {
@@ -35,7 +38,7 @@ export const technique_settings = [
 export const tasks = [
     { 
         task_id : "t1",
-        img : img_path + "1.jpg",
+        img : img1,
         // assume the browser is running in full-screen mode
         // start gives the relative position (x, y)
         start : [0.7, 0.9],
@@ -49,7 +52,7 @@ export const tasks = [
 
 	{ 
 		task_id : "t2", 
-		img : img_path + "2.jpg", 
+		img : img2, 
 		start : [0.30, 0.50], 
 		target: {
 			top: '20%',
@@ -58,7 +61,7 @@ export const tasks = [
 	}, 
 	{ 
 		task_id : "t3", 
-		img : img_path + "3.jpg", 
+		img : img3, 
 		start : [0.40, 0.80], 
 		target: {
 			top: '10%',
