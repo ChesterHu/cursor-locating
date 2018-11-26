@@ -19,6 +19,8 @@
   },
   "homepage": "https://gitlab.com/Crispher/cursor-locating#readme",
   "dependencies": {
+    "@material-ui/core": "^3.6.0",
+    "@material-ui/icons": "^3.0.1",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "react": "^16.6.3",
