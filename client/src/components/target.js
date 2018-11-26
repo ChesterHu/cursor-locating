@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import Button from '@material-ui/core/Button';
 
 import { clickTarget } from '../actions/index';
 
@@ -14,11 +15,13 @@ const toCSS = ({ target }) => {
 
 function target(props) {
 	return (
-		<button 
+		<Button 
+			variant='contained'
+			color='secondary'
 			style={toCSS(props.task)}
 			onClick={props.clickTarget}>
 			Target
-		</button>
+		</Button>
 	);
 }
 
