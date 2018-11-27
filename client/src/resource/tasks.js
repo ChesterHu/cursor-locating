@@ -45,8 +45,8 @@ export const tasks = [
         // a rectangular region specified by the following coordinates
         // [x0, x1, y0, y1]
 			target: {
-				top: '10%',
-				left: '12%',
+				top: '100px',
+				left: '200px',
 			}
     }, 
 
@@ -55,8 +55,8 @@ export const tasks = [
 		img : img2, 
 		start : [0.30, 0.50], 
 		target: {
-			top: '20%',
-			left: '22%'
+			top: '200px',
+			left: '400px'
 		}
 	}, 
 	{ 
@@ -64,8 +64,8 @@ export const tasks = [
 		img : img3, 
 		start : [0.40, 0.80], 
 		target: {
-			top: '10%',
-			left: '12%'
+			top: '120px',
+			left: '240px'
 		}
 	}, 
     
