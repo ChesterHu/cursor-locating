@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Button from '@material-ui/core/Button';
 
-import { clickTarget } from '../actions/index';
 
 const toCSS = ({ target }) => {
 	return {
@@ -19,7 +18,7 @@ function target(props) {
 			variant='contained'
 			color='secondary'
 			style={toCSS(props.task)}
-			onClick={props.clickTarget}>
+			onClick={props.onClick}>
 			Target
 		</Button>
 	);
@@ -29,8 +28,4 @@ function mapStateToProps({ tasks, activeTask }) {
 	return { task: tasks[activeTask] };
 }
 
-function mapDispatchToProps(dispatch) {
-	return bindActionCreators({ clickTarget }, dispatch); 
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(target);
+export default connect(mapStateToProps)(target);
