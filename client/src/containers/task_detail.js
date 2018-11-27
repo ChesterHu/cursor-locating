@@ -41,17 +41,33 @@ class TaskDetail extends Component {
 		this.handlePressSpace = this.handlePressSpace.bind(this);
 		this.handleClick = this.handleClick.bind(this);
 		this.resetTaskState = this.resetTaskState.bind(this);
+		this.startTask = this.startTask.bind(this);
+	}
+
+	componentDidMount() {
+		this.resetTaskState();
 	}
 
 	resetTaskState() {
+		document.addEventListener("keydown", this.handlePressSpace, false);
+		document.removeEventListener("keydown", this.handlePressCtrl, false);
+		document.onclick = () => {};
 		this.setState({
-			dummyMouseX: 50,
-			dummyMouseY: 50,
 			taskStarted: false,
-			animationOn: false
 		});
 	}
-	
+
+	startTask() {
+		document.removeEventListener("keydown", this.handlePressSpace, false);
+		document.addEventListener("keydown", this.handlePressCtrl, false);
+		document.onclick = this.handleClick;
+		this.setState({
+			dummyMouseX: 50,  // TODO: use task settings
+			dummyMouseY: 50,
+			taskStarted: true,
+		});
+	}
+
 	handleMouseMove({ movementX, movementY }) {
 		if (!this.state.taskStarted) return;
 		// keep sequential set state
@@ -70,8 +86,14 @@ class TaskDetail extends Component {
 	
 	handlePressSpace(e) {
 		if (e.keyCode === 32) {
-			this.setState({taskStarted: true});
+			this.startTask();
 			this.lockPointer();
+		}
+	}
+
+	handlePressCtrl(e) {
+		if (e.ctrlKey) {
+			console.log('usr press ctrl');
 		}
 	}
 
@@ -110,20 +132,13 @@ class TaskDetail extends Component {
 			<div style={toCSS(this.props.task)}>
 				<div 
 					className='dummy-pointer'
-					style={{position: 'absolute', top: `${this.state.dummyMouseY}px`, left: `${this.state.dummyMouseX}px`}}>dummyPointer</div>
+					style={{position: 'absolute', top: `${this.state.dummyMouseY}px`, left: `${this.state.dummyMouseX}px`}} ></div>
 				<Target />
 			</div>
 		);
 	}
 
 	render() {
-		if (!this.state.taskStarted) {
-			document.addEventListener("keydown", this.handlePressSpace, false);
-			document.onclick = () => {};
-		} else {
-			document.removeEventListener("keydown", this.handlePressSpace, false);
-			document.onclick = this.handleClick;
-		}
 		return ( 
 			<div 
 				id='task-board'
