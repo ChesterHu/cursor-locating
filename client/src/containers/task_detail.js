@@ -61,6 +61,11 @@ class TaskDetail extends Component {
 		}
 	}
 
+	handleClick() {
+		const { dummyMouseX, dummuMouseY } = this.state;
+		
+	}
+
 	lockPointer() {
 		const taskBoard = document.getElementById('task-board');
 		taskBoard.requestPointerLock = taskBoard.requestPointerLock || taskBoard.mozRequestPointerLock;
@@ -81,7 +86,7 @@ class TaskDetail extends Component {
 
 	renderTask() {
 		return (
-			<div style={toCSS(this.props.task)} onClick={exitPointerLock}>
+			<div style={toCSS(this.props.task)}>
 				<div style={{position: 'absolute', top: `${this.state.dummyMouseY}px`, left: `${this.state.dummyMouseX}px`}}>dummyPointer</div>
 				<Target onClick={() => {
 					this.props.clickTarget();

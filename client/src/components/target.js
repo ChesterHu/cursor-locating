@@ -7,8 +7,8 @@ import Button from '@material-ui/core/Button';
 const toCSS = ({ target }) => {
 	return {
 		position: 'absolute',
-		top: target.top,
-		left: target.left
+		top: target.top + 'px',
+		left: target.left + 'px'
 	};
 };
 
