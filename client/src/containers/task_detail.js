@@ -5,16 +5,14 @@ import Button from '@material-ui/core/Button';
 import Target from '../components/target';
 const MAX_HEIGHT = 400;
 const MAX_WIDTH = 600;
+const TASK_BOARD_WIDTH = 600;
+const TASK_BOARD_HEIGHT = 400;
+
 const toCSS = (task) => {
 	return {
-		height: '800px',
+		height: '100%',
 		backgroundImage: `url(${task.img})`
 	}
-}
-
-const requestPointerLock = (element) => {
-    element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock        
-    element.requestPointerLock()
 }
 
 const exitPointerLock = () => {
@@ -42,7 +40,6 @@ class TaskDetail extends Component {
 			dummyMouseY += movementY;
 			dummyMouseX = Math.min(Math.max(dummyMouseX, 0), MAX_WIDTH);
 			dummyMouseY = Math.min(Math.max(dummyMouseY, 0), MAX_HEIGHT);
-			
 			return {
 				dummyMouseX: dummyMouseX,
 				dummyMouseY: dummyMouseY
@@ -52,7 +49,8 @@ class TaskDetail extends Component {
 
 	lockPointer() {
 		const taskBoard = document.getElementById('task-board');
-		requestPointerLock(taskBoard);
+		taskBoard.requestPointerLock = taskBoard.requestPointerLock || taskBoard.mozRequestPointerLock;
+		taskBoard.requestPointerLock();
 	}
 	
 	renderCover() {
@@ -73,7 +71,7 @@ class TaskDetail extends Component {
 
 	renderTask() {
 		return (
-			<div style={toCSS(this.props.task)}>
+			<div style={toCSS(this.props.task)} onClick={exitPointerLock}>
 				<div style={{position: 'absolute', top: `${this.state.dummyMouseY}px`, left: `${this.state.dummyMouseX}px`}}>dummyPointer</div>
 				<Target />
 			</div>
@@ -82,7 +80,8 @@ class TaskDetail extends Component {
 
 	render() {
 		return ( 
-			<div id='task-board'
+			<div 
+				id='task-board'
 				onMouseMove={this.handleMouseMove}>
 				{this.state.taskStarted ? this.renderTask() : this.renderCover()}
 			</div>
