@@ -39,6 +39,7 @@ class TaskDetail extends Component {
 		};
 		this.handleMouseMove = this.handleMouseMove.bind(this);
 		this.handlePressSpace = this.handlePressSpace.bind(this);
+		this.handlePressCtrl = this.handlePressCtrl.bind(this);
 		this.handleClick = this.handleClick.bind(this);
 		this.resetTaskState = this.resetTaskState.bind(this);
 		this.startTask = this.startTask.bind(this);
@@ -54,6 +55,7 @@ class TaskDetail extends Component {
 		document.onclick = () => {};
 		this.setState({
 			taskStarted: false,
+			animationOn: false,
 		});
 	}
 
@@ -93,7 +95,7 @@ class TaskDetail extends Component {
 
 	handlePressCtrl(e) {
 		if (e.ctrlKey) {
-			console.log('usr press ctrl');
+			this.setState({animationOn: true});
 		}
 	}
 
@@ -132,13 +134,19 @@ class TaskDetail extends Component {
 			<div style={toCSS(this.props.task)}>
 				<div 
 					className='dummy-pointer'
-					style={{position: 'absolute', top: `${this.state.dummyMouseY}px`, left: `${this.state.dummyMouseX}px`}} ></div>
+					style={{
+						position: 'absolute', 
+						top: `${this.state.dummyMouseY}px`, 
+						left: `${this.state.dummyMouseX}px`,
+						width: `${25 + 3 * this.state.animationOn}px`,
+						height: `${25 + 3 * this.state.animationOn}px`}}/>
 				<Target />
 			</div>
 		);
 	}
 
 	render() {
+		const { dummyMouseX, dummyMouseY } = this.state;
 		return ( 
 			<div 
 				id='task-board'
