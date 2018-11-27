@@ -17,8 +17,7 @@ function target(props) {
 		<Button 
 			variant='contained'
 			color='secondary'
-			style={toCSS(props.task)}
-			onClick={props.onClick}>
+			style={toCSS(props.task)}>
 			Target
 		</Button>
 	);
