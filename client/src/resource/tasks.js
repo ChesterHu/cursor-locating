@@ -45,8 +45,8 @@ export const tasks = [
         // a rectangular region specified by the following coordinates
         // [x0, x1, y0, y1]
 			target: {
-				top: 100,
-				left: 200,
+				top: 500,
+				left: 1000,
 			}
     }, 
 

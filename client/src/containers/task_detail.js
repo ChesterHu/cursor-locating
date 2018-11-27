@@ -36,6 +36,7 @@ class TaskDetail extends Component {
 		};
 		this.handleMouseMove = this.handleMouseMove.bind(this);
 		this.handlePressSpace = this.handlePressSpace.bind(this);
+		this.handleClick = this.handleClick.bind(this);
 	}
 	
 	handleMouseMove({ movementX, movementY }) {
@@ -62,8 +63,15 @@ class TaskDetail extends Component {
 	}
 
 	handleClick() {
-		const { dummyMouseX, dummuMouseY } = this.state;
-		
+		const { dummyMouseX, dummyMouseY } = this.state;
+		const targetX = this.props.task.target.left;
+		const targetY = this.props.task.target.top;
+		const diffX = Math.abs(targetX - dummyMouseX);
+		const diffY = Math.abs(targetY - dummyMouseY);
+		if (diffX < 50 && diffY < 50) {
+			this.props.clickTarget();
+			this.setState({taskStarted: false});
+		}
 	}
 
 	lockPointer() {
@@ -79,7 +87,7 @@ class TaskDetail extends Component {
 					<h3>Task {this.props.task.task_id}</h3>
 					<p>Please press space to start the task</p>
 				</Paper>
-				<Target onClick={() => {}}/>
+				<Target />
 			</div>
 		);
 	}
@@ -88,10 +96,7 @@ class TaskDetail extends Component {
 		return (
 			<div style={toCSS(this.props.task)}>
 				<div style={{position: 'absolute', top: `${this.state.dummyMouseY}px`, left: `${this.state.dummyMouseX}px`}}>dummyPointer</div>
-				<Target onClick={() => {
-					this.props.clickTarget();
-					this.setState({ taskStarted: false });
-				}}/>
+				<Target />
 			</div>
 		);
 	}
@@ -99,8 +104,10 @@ class TaskDetail extends Component {
 	render() {
 		if (!this.state.taskStarted) {
 			document.addEventListener("keydown", this.handlePressSpace, false);
+			document.onclick = () => {};
 		} else {
 			document.removeEventListener("keydown", this.handlePressSpace, false);
+			document.onclick = this.handleClick;
 		}
 		return ( 
 			<div 
