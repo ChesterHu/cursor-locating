@@ -9,6 +9,7 @@ import { clickTarget } from '../actions/index';
 
 const TASK_BOARD_WIDTH = screen.width;
 const TASK_BOARD_HEIGHT = screen.height;
+const ANIMATION_TIME = 1000;  // ms
 
 const toCSS = (task) => {
 	return {
@@ -35,7 +36,7 @@ class TaskDetail extends Component {
 			dummyMouseX: 50,
 			dummyMouseY: 50,
 			taskStarted: false,
-			animationOn: false
+			animationOn: false,
 		};
 		this.handleMouseMove = this.handleMouseMove.bind(this);
 		this.handlePressSpace = this.handlePressSpace.bind(this);
@@ -94,8 +95,18 @@ class TaskDetail extends Component {
 	}
 
 	handlePressCtrl(e) {
-		if (e.ctrlKey) {
-			this.setState({animationOn: true});
+		if (e.ctrlKey && !this.state.animationOn) {
+			this.setState({
+				animationOn: true,
+			});
+			this.timer = setInterval(() => this.tick(), ANIMATION_TIME);
+		}
+	}
+
+	tick() {
+		if (this.state.animationOn) {
+			this.setState({animationOn: false});
+			clearInterval(this.timer);
 		}
 	}
 
@@ -138,8 +149,8 @@ class TaskDetail extends Component {
 						position: 'absolute', 
 						top: `${this.state.dummyMouseY}px`, 
 						left: `${this.state.dummyMouseX}px`,
-						width: `${25 + 3 * this.state.animationOn}px`,
-						height: `${25 + 3 * this.state.animationOn}px`}}/>
+						width: `${25 * (1 + 3 * this.state.animationOn)}px`,
+						height: `${25 * (1 + 3 * this.state.animationOn)}px`}}/>
 				<Target />
 			</div>
 		);
