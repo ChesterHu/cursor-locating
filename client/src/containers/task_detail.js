@@ -17,7 +17,9 @@ const toCSS = (task) => {
 		top: 0,
 		left: 0,
 		position: 'absolute',
-		backgroundImage: `url(${task.img})`
+		backgroundImage: `url(${task.img})`,
+		backgroundSize: 'cover',
+		backgroundPosition: 'center'
 	}
 }
 
@@ -33,10 +35,21 @@ class TaskDetail extends Component {
 			dummyMouseX: 50,
 			dummyMouseY: 50,
 			taskStarted: false,
+			animationOn: false
 		};
 		this.handleMouseMove = this.handleMouseMove.bind(this);
 		this.handlePressSpace = this.handlePressSpace.bind(this);
 		this.handleClick = this.handleClick.bind(this);
+		this.resetTaskState = this.resetTaskState.bind(this);
+	}
+
+	resetTaskState() {
+		this.setState({
+			dummyMouseX: 50,
+			dummyMouseY: 50,
+			taskStarted: false,
+			animationOn: false
+		});
 	}
 	
 	handleMouseMove({ movementX, movementY }) {
@@ -70,7 +83,7 @@ class TaskDetail extends Component {
 		const diffY = Math.abs(targetY - dummyMouseY);
 		if (diffX < 50 && diffY < 50) {
 			this.props.clickTarget();
-			this.setState({taskStarted: false});
+			this.resetTaskState();
 		}
 	}
 
@@ -95,7 +108,9 @@ class TaskDetail extends Component {
 	renderTask() {
 		return (
 			<div style={toCSS(this.props.task)}>
-				<div style={{position: 'absolute', top: `${this.state.dummyMouseY}px`, left: `${this.state.dummyMouseX}px`}}>dummyPointer</div>
+				<div 
+					className='dummy-pointer'
+					style={{position: 'absolute', top: `${this.state.dummyMouseY}px`, left: `${this.state.dummyMouseX}px`}}>dummyPointer</div>
 				<Target />
 			</div>
 		);
