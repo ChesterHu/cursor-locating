@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Button from '@material-ui/core/Button';
 
 import Target from '../components/target';
 const MAX_HEIGHT = 400;
@@ -12,9 +13,13 @@ const toCSS = (task) => {
 }
 
 const requestPointerLock = (element) => {
-    element.requestPointerLock =
-        element.requestPointerLock || element.mozRequestPointerLock        
+    element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock        
     element.requestPointerLock()
+}
+
+const exitPointerLock = () => {
+	document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock;
+	document.exitPointerLock();
 }
 
 class TaskDetail extends Component {
@@ -23,13 +28,13 @@ class TaskDetail extends Component {
 		this.state = {
 			dummyMouseX: 50,
 			dummyMouseY: 50,
-			backgroundWidth: 600,
-			backgroundHeight: 400,
+			taskStarted: false,
 		};
 		this.handleMouseMove = this.handleMouseMove.bind(this);
 	}
 
 	handleMouseMove({ movementX, movementY }) {
+		if (!this.state.taskStarted) return;
 		// keep sequential set state
 		this.setState(() => {
 			let { dummyMouseX, dummyMouseY } = this.state;
@@ -37,7 +42,7 @@ class TaskDetail extends Component {
 			dummyMouseY += movementY;
 			dummyMouseX = Math.min(Math.max(dummyMouseX, 0), MAX_WIDTH);
 			dummyMouseY = Math.min(Math.max(dummyMouseY, 0), MAX_HEIGHT);
-
+			
 			return {
 				dummyMouseX: dummyMouseX,
 				dummyMouseY: dummyMouseY
@@ -49,16 +54,37 @@ class TaskDetail extends Component {
 		const taskBoard = document.getElementById('task-board');
 		requestPointerLock(taskBoard);
 	}
-
-	render() {
+	
+	renderCover() {
 		return (
-			<div 
-				id='task-board'
-				style={toCSS(this.props.task)}
-				onMouseMove={this.handleMouseMove}
-				onClick={this.lockPointer}>
+			<div className='task-cover'>
+				<Button 
+					variant='contained' 
+					color='primary'
+					style={{left: '50%', top: '50%'}}
+					onClick={() => {
+						this.setState({ taskStarted: true });
+						this.lockPointer();
+					}}
+				>Start Task</Button>
+			</div>
+		);
+	}
+
+	renderTask() {
+		return (
+			<div style={toCSS(this.props.task)}>
 				<div style={{position: 'absolute', top: `${this.state.dummyMouseY}px`, left: `${this.state.dummyMouseX}px`}}>dummyPointer</div>
 				<Target />
+			</div>
+		);
+	}
+
+	render() {
+		return ( 
+			<div id='task-board'
+				onMouseMove={this.handleMouseMove}>
+				{this.state.taskStarted ? this.renderTask() : this.renderCover()}
 			</div>
 		);
 	}
