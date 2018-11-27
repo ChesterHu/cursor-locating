@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
 
 import Target from '../components/target';
-const MAX_HEIGHT = 400;
-const MAX_WIDTH = 600;
+import { clickTarget } from '../actions/index';
+
 const TASK_BOARD_WIDTH = screen.width;
 const TASK_BOARD_HEIGHT = screen.height;
 
@@ -33,8 +35,9 @@ class TaskDetail extends Component {
 			taskStarted: false,
 		};
 		this.handleMouseMove = this.handleMouseMove.bind(this);
+		this.handlePressSpace = this.handlePressSpace.bind(this);
 	}
-
+	
 	handleMouseMove({ movementX, movementY }) {
 		if (!this.state.taskStarted) return;
 		// keep sequential set state
@@ -50,6 +53,13 @@ class TaskDetail extends Component {
 			}
 		});
 	}
+	
+	handlePressSpace(e) {
+		if (e.keyCode === 32) {
+			this.setState({taskStarted: true});
+			this.lockPointer();
+		}
+	}
 
 	lockPointer() {
 		const taskBoard = document.getElementById('task-board');
@@ -60,15 +70,11 @@ class TaskDetail extends Component {
 	renderCover() {
 		return (
 			<div className='task-cover'>
-				<Button 
-					variant='contained' 
-					color='primary'
-					style={{left: '50%', top: '50%'}}
-					onClick={() => {
-						this.setState({ taskStarted: true });
-						this.lockPointer();
-					}}
-				>Start Task</Button>
+				<Paper> 
+					<h3>Task {this.props.task.task_id}</h3>
+					<p>Please press space to start the task</p>
+				</Paper>
+				<Target onClick={() => {}}/>
 			</div>
 		);
 	}
@@ -77,12 +83,20 @@ class TaskDetail extends Component {
 		return (
 			<div style={toCSS(this.props.task)} onClick={exitPointerLock}>
 				<div style={{position: 'absolute', top: `${this.state.dummyMouseY}px`, left: `${this.state.dummyMouseX}px`}}>dummyPointer</div>
-				<Target />
+				<Target onClick={() => {
+					this.props.clickTarget();
+					this.setState({ taskStarted: false });
+				}}/>
 			</div>
 		);
 	}
 
 	render() {
+		if (!this.state.taskStarted) {
+			document.addEventListener("keydown", this.handlePressSpace, false);
+		} else {
+			document.removeEventListener("keydown", this.handlePressSpace, false);
+		}
 		return ( 
 			<div 
 				id='task-board'
@@ -99,4 +113,8 @@ function mapStateToProps({ tasks, activeTask }) {
 	};
 }
 
-export default connect(mapStateToProps)(TaskDetail);
+function mapDispatchToProps(dispatch) {
+	return bindActionCreators({ clickTarget }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TaskDetail);
