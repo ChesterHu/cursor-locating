@@ -5,12 +5,16 @@ import Button from '@material-ui/core/Button';
 import Target from '../components/target';
 const MAX_HEIGHT = 400;
 const MAX_WIDTH = 600;
-const TASK_BOARD_WIDTH = 600;
-const TASK_BOARD_HEIGHT = 400;
+const TASK_BOARD_WIDTH = screen.width;
+const TASK_BOARD_HEIGHT = screen.height;
 
 const toCSS = (task) => {
 	return {
-		height: '100%',
+		width:'100%',
+		height:'100%',
+		top: 0,
+		left: 0,
+		position: 'absolute',
 		backgroundImage: `url(${task.img})`
 	}
 }
@@ -38,8 +42,8 @@ class TaskDetail extends Component {
 			let { dummyMouseX, dummyMouseY } = this.state;
 			dummyMouseX += movementX;
 			dummyMouseY += movementY;
-			dummyMouseX = Math.min(Math.max(dummyMouseX, 0), MAX_WIDTH);
-			dummyMouseY = Math.min(Math.max(dummyMouseY, 0), MAX_HEIGHT);
+			dummyMouseX = Math.min(Math.max(dummyMouseX, 0), TASK_BOARD_WIDTH);
+			dummyMouseY = Math.min(Math.max(dummyMouseY, 0), TASK_BOARD_HEIGHT);
 			return {
 				dummyMouseX: dummyMouseX,
 				dummyMouseY: dummyMouseY
