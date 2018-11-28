@@ -10,6 +10,8 @@ import { clickTarget } from '../actions/index';
 const TASK_BOARD_WIDTH = screen.width;
 const TASK_BOARD_HEIGHT = screen.height;
 const ANIMATION_TIME = 1000;  // ms
+const SHAKE_RADIUS = 100;
+const SHAKE_NUM_POINTS = 100;
 
 const toCSS = (task) => {
 	return {
@@ -37,6 +39,9 @@ class TaskDetail extends Component {
 			dummyMouseY: 50,
 			taskStarted: false,
 			animationOn: false,
+			prevX: 50,
+			prevY: 50,
+			numPoints: 0,
 		};
 		this.handleMouseMove = this.handleMouseMove.bind(this);
 		this.handlePressSpace = this.handlePressSpace.bind(this);
@@ -44,10 +49,16 @@ class TaskDetail extends Component {
 		this.handleClick = this.handleClick.bind(this);
 		this.resetTaskState = this.resetTaskState.bind(this);
 		this.startTask = this.startTask.bind(this);
+		this.countPoints = this.countPoints.bind(this);
 	}
 
 	componentDidMount() {
 		this.resetTaskState();
+		this.shakeTimer = setInterval(() => this.shakeTick(), 1000);
+	}
+
+	conponentWillUnmount() {
+		clearInterval(this.shakeTimer);
 	}
 
 	resetTaskState() {
@@ -80,6 +91,7 @@ class TaskDetail extends Component {
 			dummyMouseY += movementY;
 			dummyMouseX = Math.min(Math.max(dummyMouseX, 0), TASK_BOARD_WIDTH);
 			dummyMouseY = Math.min(Math.max(dummyMouseY, 0), TASK_BOARD_HEIGHT);
+			this.countPoints(dummyMouseX, dummyMouseY);
 			return {
 				dummyMouseX: dummyMouseX,
 				dummyMouseY: dummyMouseY
@@ -107,6 +119,29 @@ class TaskDetail extends Component {
 		if (this.state.animationOn) {
 			this.setState({animationOn: false});
 			clearInterval(this.timer);
+		}
+	}
+
+	shakeTick() {
+		this.setState({
+			prevX: this.state.dummyMouseX,
+			prevY: this.state.dummyMouseY,
+			numPoints: 0
+		})
+	}
+
+	countPoints(x, y) {
+		const diffX = x - this.state.prevX;
+		const diffY = y - this.state.prevY;
+		if (Math.sqrt(diffX * diffX + diffY * diffY) < SHAKE_RADIUS) {
+			this.setState({numPoints: this.state.numPoints + 1});
+		}
+		if (!this.state.animationOn && this.state.numPoints > SHAKE_NUM_POINTS) {
+			this.setState({animationOn: true})
+			this.shakeTempTimer = setInterval(() => {
+				clearInterval(this.shakeTempTimer);
+				this.setState({animationOn: false});
+			}, 1000);
 		}
 	}
 
