@@ -72,6 +72,11 @@ export const tasks = [
 ]
 
 export const questionnaire = [
+		{
+			question_id : "q0",
+			question: "information",
+			type : "annoucement"
+		},
     { 
         question_id : "q1",
         question : "What pointing device are you using?",
