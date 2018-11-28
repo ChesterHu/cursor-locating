@@ -32,3 +32,8 @@
 	border: 1px solid black;
 	transition:width 300ms ease-in-out, height 300ms ease-in-out;
 }
+
+.form-item {
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
