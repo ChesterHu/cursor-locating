@@ -15,30 +15,49 @@ class Questionnaire extends Component {
 		this.state = {
 			name: '',
 			device: 'mouse',
-			browser: '',
+			scoreCtrl: 1,
+			scoreShake: 1,
+			comment: '',
 		};
+		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 	
-	handleSubmit() {
-		console.log('submit');
+	handleSubmit(e) {
+		e.preventDefault();
+		console.log(this.state);
+	}
+
+	renderLevelSelect(selectedValue, onChange, numLevels, title) {
+		const levels = Array.from(Array(numLevels).keys());
+		return (
+			<RadioGroup 
+				value={`${selectedValue}`}
+				onChange={onChange}
+				row
+			>
+				{levels.map((level) => <FormControlLabel value={`${level + 1}`} control={<Radio />} label={level + 1} />)}
+			</RadioGroup>
+		);
 	}
 
 	render() {
 		return (
 			<Grid
 				container
-				spacing={0}
+				spacing={2}
 				direction="column"
 				alignItems="center"
-				style={{ minHeight: '100vh' }}
+				style={{ minHeight: '100vh', marginTop:'40px' }}
 			>
+			<Paper style={{padding:'30px'}}>
+				<h3>Final submit form</h3>
 				<form onSubmit={this.handleSubmit}>
 					<div className='form-item'>
 						<TextField
 							id='name'
 							label='Name'
 							value={this.state.name}
-							onChange={e => this.setState({name: e.target.value})}
+							onChange={(e)=> this.setState({name: e.target.value})}
 						/>
 					</div>
 					<div className='form-item'>
@@ -53,10 +72,37 @@ class Questionnaire extends Component {
 							<FormControlLabel value='touchpad' control={<Radio />} label='Touchpad'/>
 						</RadioGroup>
 					</div>
-					<div classname='form-item'>
-						<Button variant='contained' color='secondary'>Submit</Button>
+					<div className='form-item'>
+						<FormLabel component="legend">Please rate your experience of Ctrl Key</FormLabel>
+						{this.renderLevelSelect(this.state.scoreCtrl, (e)=>this.setState({scoreCtrl: e.target.value}), 5)}
+					</div>
+					<div className='form-item'>
+						<FormLabel component="legend">Please rate your experience of Shake</FormLabel>
+						{this.renderLevelSelect(this.state.scoreShake, (e)=>this.setState({scoreShake: e.target.value}), 5)}
+					</div>
+					<div className='form-item'>
+						<TextField
+							id="outlined-full-width"
+							label="Comment"
+							value={this.state.comment}
+							onChange={(e) => this.setState({comment: e.target.value})}
+							placeholder="Your comment"
+							helperText="You can write any comment or any issue you have for the experiment"
+							fullWidth
+							multiline
+							rows='2'
+							margin="normal"
+							variant="outlined"
+							InputLabelProps={{
+								shrink: true,
+							}}
+						/>
+					</div>
+					<div className='form-item'>
+						<Button type='submit' variant='contained' color='secondary'>Submit</Button>
 					</div>
 				</form>
+			</Paper>
 			</Grid>
 		);
 	}
