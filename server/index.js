@@ -9,6 +9,12 @@ app.use(express.static(`${__dirname}/../client/dist`));
 app.get('*', (req, res) => {
 	res.sendFile(path.resolve(`${__dirname}/../client/dist/index.html`));
 });
+
+app.post('/post_receiver.php',function(req,res){
+	console.log('received'); // test
+});
+
+
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}!`);
 });
