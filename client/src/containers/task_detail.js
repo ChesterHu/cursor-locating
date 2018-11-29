@@ -111,14 +111,12 @@ class TaskDetail extends Component {
 			this.setState({
 				animationOn: true,
 			});
-			this.timer = setInterval(() => this.tick(), ANIMATION_TIME);
-		}
-	}
-
-	tick() {
-		if (this.state.animationOn) {
-			this.setState({animationOn: false});
-			clearInterval(this.timer);
+			this.timer = setInterval(() => {
+				if (this.state.animationOn) {
+					this.setState({animationOn: false});
+					clearInterval(this.timer);
+				}
+			}, ANIMATION_TIME);
 		}
 	}
 
