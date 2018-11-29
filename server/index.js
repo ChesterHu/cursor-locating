@@ -11,7 +11,7 @@ app.get('*', (req, res) => {
 });
 
 app.post('/post_receiver.php',function(req,res){
-	console.log('received'); // test
+	res.end('received');
 });
 
 
