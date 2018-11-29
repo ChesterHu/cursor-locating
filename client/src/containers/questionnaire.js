@@ -9,6 +9,8 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
+const RECEIVER_URL = 'localhost/post_receiver.php';
+
 class Questionnaire extends Component {
 	constructor(props) {
 		super(props);
@@ -25,6 +27,10 @@ class Questionnaire extends Component {
 	handleSubmit(e) {
 		e.preventDefault();
 		console.log(this.state);
+		let request = new XMLHttpRequest();
+		request.open('POST', RECEIVER_URL, true);
+		request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+		request.send(JSON.stringify(this.state));
 	}
 
 	renderLevelSelect(selectedValue, onChange, numLevels, title) {
