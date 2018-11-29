@@ -38,7 +38,7 @@ export const technique_settings = [
 export const tasks = [
     { 
         task_id : "t1",
-        img : img1,
+        img : "https://www.virginexperiencedays.co.uk/content/img/product/large/the-view-from-the-12102928.jpg",
         // assume the browser is running in full-screen mode
         // start gives the relative position (x, y)
         start : [0.7, 0.9],
@@ -52,7 +52,7 @@ export const tasks = [
 
 	{ 
 		task_id : "t2", 
-		img : img2, 
+		img : "https://freedesignfile.com/upload/2017/05/Sunrise-tropical-island-beach-view-HD-picture-01.jpg", 
 		start : [0.30, 0.50], 
 		target: {
 			top: 200,
@@ -61,7 +61,7 @@ export const tasks = [
 	}, 
 	{ 
 		task_id : "t3", 
-		img : img3, 
+		img : "http://cdn.osxdaily.com/wp-content/uploads/2016/12/window-snapping-mac-os.jpg", 
 		start : [0.40, 0.80], 
 		target: {
 			top: 120,

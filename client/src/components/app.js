@@ -7,6 +7,6 @@ import Questionnaire from '../containers/questionnaire';
 
 export default function() {
 	return (
-		<Questionnaire />
+		<TaskDetail />
 	);
 }

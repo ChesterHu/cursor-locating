@@ -26,7 +26,6 @@ class Questionnaire extends Component {
 	
 	handleSubmit(e) {
 		e.preventDefault();
-		console.log(this.state);
 		let request = new XMLHttpRequest();
 		request.open('POST', RECEIVER_URL, true);
 		request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
