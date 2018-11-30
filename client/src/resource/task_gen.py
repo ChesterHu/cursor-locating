@@ -3,12 +3,13 @@ def repr(str):
 
 
 images = [
-    "https://crispher.github.io/pages/s1.jpg",
-    "https://crispher.github.io/pages/s2.jpg",
-    "https://crispher.github.io/pages/s3.jpg",
-    "https://crispher.github.io/pages/s4.jpg",
-    "https://crispher.github.io/pages/s5.jpg",
-    "https://wallpaperbrowse.com/media/images/background-2076336_960_720.jpg"
+    "https://crispher.github.io/pages/s11.jpg",
+    "https://crispher.github.io/pages/s12.jpg",
+    "https://crispher.github.io/pages/s13.jpg",
+    "https://crispher.github.io/pages/s14.jpg",
+    "https://crispher.github.io/pages/s15.jpg",
+    "https://crispher.github.io/pages/s16.jpg",
+    "https://crispher.github.io/pages/s17.jpg"
 ]
 
 images_var_script = "export const images = [\n"
@@ -65,7 +66,7 @@ sample_task_instruction = "This is a sample task, you may move your mouse around
  to 100%% and run your brower in full screen mode. You should see the target at the certer of the screen."
 
 taskA_var_script = "export const taskA = ["
-taskA_var_script += new_task(5, 0, 0, 'None', sample_task_instruction + '\nNo pointer enhancement.')
+taskA_var_script += new_task(5, 0, 0, 'None', sample_task_instruction + ' No pointer enhancement.')
 taskA_var_script += ",\n"
 for img, i, j in ij_shuffle1:
     taskA_var_script += new_task(img, i, j, 'None', "There is no cursor enhancement in this task")
@@ -74,7 +75,7 @@ taskA_var_script += "]\n"
 
 
 taskB_var_script = "export const taskB = ["
-taskB_var_script += new_task(5, 0, 0, 'Ctrl', sample_task_instruction + '\nTry pressing Ctrl.' )
+taskB_var_script += new_task(5, 0, 0, 'Ctrl', sample_task_instruction + ' Try pressing Ctrl.' )
 taskB_var_script += ",\n"
 for img, i, j in ij_shuffle2:
     taskB_var_script += new_task(img, i, j, 'Ctrl', "You may press Ctrl to magnify your cursor")
@@ -83,7 +84,7 @@ taskB_var_script += "]\n"
 
 
 taskC_var_script = "export const taskC = ["
-taskC_var_script += new_task(5, 0, 0, 'Shake', sample_task_instruction + '\nTry shaking your cursor.')
+taskC_var_script += new_task(5, 0, 0, 'Shake', sample_task_instruction + ' Try shaking your cursor.')
 taskC_var_script += ",\n"
 for img, i, j in ij_shuffle3:
     taskC_var_script += new_task(img, i, j, 'Shake', "When you shake your cursor, it is magnified")
