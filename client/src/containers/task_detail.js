@@ -215,12 +215,15 @@ class TaskDetail extends Component {
 
 	renderCover() {
 		const { taskIndex, totalTasks } = this.props;
+		const progress = `${taskIndex} / ${totalTasks}`;
 		return (
 			<div className='task-cover'>
 				<Paper
+					className='task-information'
+					id={progress}
 					alignItems='center'
 					style={{margin: '20px', padding: '10px', width: '600px'}}> 
-					<h3>Task {`${taskIndex + 1} / ${totalTasks}`}</h3>
+					<h3>Task {progress}</h3>
 					<p>{this.props.task.info}</p>
 					<p>Please press space to start the task</p>
 				</Paper>
