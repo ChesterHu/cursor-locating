@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Button from '@material-ui/core/Button';
-
+import Fab from '@material-ui/core/Fab';
 
 const TASK_BOARD_WIDTH = screen.width;
 const TASK_BOARD_HEIGHT = screen.height;
@@ -17,12 +16,9 @@ const toCSS = ({ target }) => {
 
 function target(props) {
 	return (
-		<Button 
-			variant='contained'
-			color='secondary'
-			style={toCSS(props.task)}>
+		<Fab color="secondary" aria-label="Add" style={toCSS(props.task)}>
 			Target
-		</Button>
+		</Fab>
 	);
 }
 
