@@ -115,7 +115,13 @@ class Questionnaire extends Component {
 								<Button type='submit' variant='contained' color='secondary'>Submit</Button>
 							</div>
 						</form>}
-						{this.state.submitted && <h1> Thank You! </h1>}
+						{
+							this.state.submitted && 
+							<div>
+								<h1> Thank You! </h1>
+								<p> Your data has been recorded </p>
+							</div>
+						}
 				</Paper>
 			</Grid>
 		);
