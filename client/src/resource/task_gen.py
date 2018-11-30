@@ -64,7 +64,7 @@ random.shuffle(ij_combinations)
 ij_shuffle3 = ij_combinations[:]
 
 sample_task_instruction = "This is a sample task, you may move your mouse around. Remember to set page zoom\
- to 100%% and run your brower in full screen mode. You should see the target at the certer of the screen."
+ to 100% and run your brower in full screen mode. You should see the target at the certer of the screen."
 
 taskA_var_script = "export const taskA = ["
 taskA_var_script += new_task(6, 0, 0, 'None', sample_task_instruction + ' No pointer enhancement.')
