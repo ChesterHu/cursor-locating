@@ -107,8 +107,8 @@ class TaskDetail extends Component {
 			let { dummyMouseX, dummyMouseY } = this.state;
 			dummyMouseX += movementX;
 			dummyMouseY += movementY;
-			dummyMouseX = Math.min(Math.max(dummyMouseX, 0), TASK_BOARD_WIDTH);
-			dummyMouseY = Math.min(Math.max(dummyMouseY, 0), TASK_BOARD_HEIGHT);
+			dummyMouseX = Math.min(Math.max(dummyMouseX, 0), TASK_BOARD_WIDTH * 0.99);
+			dummyMouseY = Math.min(Math.max(dummyMouseY, 0), TASK_BOARD_HEIGHT * 0.99);
 			return {
 				dummyMouseX: dummyMouseX,
 				dummyMouseY: dummyMouseY
