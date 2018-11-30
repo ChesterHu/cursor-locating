@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 
 import Target from '../components/target';
-import { clickTarget } from '../actions/index';
+import { clickTarget, completeTask } from '../actions/index';
 
 const TASK_BOARD_WIDTH = screen.width;
 const TASK_BOARD_HEIGHT = screen.height;
@@ -13,6 +13,7 @@ const ZIGZAG_RECORD_TIME = 100;
 const ZIGZAG_DETECT_TIME = 1500;
 const ZIGZAG_MAX = 2;
 const ANIMATION_TIME = 1000;  // ms
+const RECORD_TIME = 100;
 
 const toCSS = (task) => {
 	return {
@@ -36,13 +37,8 @@ class TaskDetail extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			dummyMouseX: 50,
-			dummyMouseY: 50,
 			taskStarted: false,
 			animationOn: false,
-			prevX: 50,
-			prevY: 50,
-			numPoints: 0,
 		};
 		this.handleMouseMove = this.handleMouseMove.bind(this);
 		this.handlePressSpace = this.handlePressSpace.bind(this);
@@ -62,6 +58,7 @@ class TaskDetail extends Component {
 		document.onclick = () => {};
 		clearInterval(this.zigzagRecordTimer);
 		clearInterval(this.zigzagDetectTimer);
+		clearInterval(this.recordTimer);
 		this.setState({
 			taskStarted: false,
 			animationOn: false,
@@ -72,9 +69,10 @@ class TaskDetail extends Component {
 		document.removeEventListener("keydown", this.handlePressSpace, false);
 		if (true) {
 			this.zigzagRecordTimer = setInterval(() => {
+				const { historyX, historyY, dummyMouseX, dummyMouseY } = this.state;
 				this.setState({
-					historyX : [...this.state.historyX, this.state.dummyMouseX],
-					historyY : [...this.state.historyY, this.state.dummyMouseY],
+					historyX: [...historyX, dummyMouseX],
+					historyY: [...historyY, dummyMouseY],
 				});
 			}, ZIGZAG_RECORD_TIME);
 			this.zigzagDetectTimer = setInterval(() => {
@@ -84,13 +82,19 @@ class TaskDetail extends Component {
 			document.addEventListener("keydown", this.handlePressCtrl, false);
 		}
 		document.onclick = this.handleClick;
-		this.setState({
-			dummyMouseX: 50,  // TODO: use task settings
-			dummyMouseY: 50,
-			historyX: [],
-			historyY: [],
-			taskStarted: true,
+		this.setState(() => {
+			return {
+				dummyMouseX: 50,  // TODO: use task settings
+				dummyMouseY: 50,
+				historyX: [],
+				historyY: [],
+				recordX: [],
+				recordY: [],
+				startTime: Date.now(),
+				taskStarted: true,
+			}
 		});
+		this.recordTimer = setInterval(() => this.record(), RECORD_TIME);
 	}
 
 	handleMouseMove({ movementX, movementY }) {
@@ -145,12 +149,28 @@ class TaskDetail extends Component {
 		const { dummyMouseX, dummyMouseY } = this.state;
 		const targetX = this.props.task.target.left;
 		const targetY = this.props.task.target.top;
-		const diffX = Math.abs(targetX - dummyMouseX);
+		const diffX = Math.abs(targetX - dummyMouseX);  // TODO change target to circle
 		const diffY = Math.abs(targetY - dummyMouseY);
 		if (diffX < 50 && diffY < 50) {
-			this.props.clickTarget();
-			this.resetTaskState();
+			this.handleTaskComplete();
 		}
+	}
+
+	handleTaskComplete() {
+		const { startTime, recordX, recordY } = this.state;
+		this.props.clickTarget();
+		this.props.completeTask(Date.now() - startTime, recordX, recordY);
+		this.resetTaskState();
+	}
+
+	record() {
+		const { recordX, recordY, dummyMouseX, dummyMouseY } = this.state;
+		this.setState(() => {
+			return {
+				recordX: [...recordX, dummyMouseX],
+				recordY: [...recordY, dummyMouseY],
+			}
+		});
 	}
 
 	lockPointer() {
@@ -242,7 +262,7 @@ function mapStateToProps({ tasks, activeTask }) {
 }
 
 function mapDispatchToProps(dispatch) {
-	return bindActionCreators({ clickTarget }, dispatch);
+	return bindActionCreators({ clickTarget, completeTask }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TaskDetail);

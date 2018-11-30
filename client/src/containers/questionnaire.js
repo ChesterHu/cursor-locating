@@ -29,7 +29,12 @@ class Questionnaire extends Component {
 		let request = new XMLHttpRequest();
 		request.open('POST', RECEIVER_URL, true);
 		request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-		request.send(JSON.stringify(this.state));
+		const body = {
+			userInfo: this.state,
+			userRecords: this.props.records,
+		};
+		console.log(body);
+		request.send(JSON.stringify(body));
 	}
 
 	renderLevelSelect(selectedValue, onChange, numLevels, title) {
@@ -113,4 +118,8 @@ class Questionnaire extends Component {
 	}
 }
 
-export default Questionnaire;
+function mapStateToProps({ records }) {
+	return { records };
+}
+
+export default connect(mapStateToProps)(Questionnaire);
