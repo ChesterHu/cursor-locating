@@ -9,9 +9,10 @@ import { clickTarget } from '../actions/index';
 
 const TASK_BOARD_WIDTH = screen.width;
 const TASK_BOARD_HEIGHT = screen.height;
+const ZIGZAG_RECORD_TIME = 100;
+const ZIGZAG_DETECT_TIME = 1500;
+const ZIGZAG_MAX = 2;
 const ANIMATION_TIME = 1000;  // ms
-const SHAKE_RADIUS = 100;
-const SHAKE_NUM_POINTS = 100;
 
 const toCSS = (task) => {
 	return {
@@ -49,22 +50,18 @@ class TaskDetail extends Component {
 		this.handleClick = this.handleClick.bind(this);
 		this.resetTaskState = this.resetTaskState.bind(this);
 		this.startTask = this.startTask.bind(this);
-		this.countPoints = this.countPoints.bind(this);
 	}
 
 	componentDidMount() {
 		this.resetTaskState();
-		this.shakeTimer = setInterval(() => this.shakeTick(), 1000);
-	}
-
-	conponentWillUnmount() {
-		clearInterval(this.shakeTimer);
 	}
 
 	resetTaskState() {
 		document.addEventListener("keydown", this.handlePressSpace, false);
 		document.removeEventListener("keydown", this.handlePressCtrl, false);
 		document.onclick = () => {};
+		clearInterval(this.zigzagRecordTimer);
+		clearInterval(this.zigzagDetectTimer);
 		this.setState({
 			taskStarted: false,
 			animationOn: false,
@@ -72,12 +69,25 @@ class TaskDetail extends Component {
 	}
 
 	startTask() {
+
 		document.removeEventListener("keydown", this.handlePressSpace, false);
+		this.zigzagRecordTimer = setInterval(() => {
+			this.setState({
+				historyX : [...this.state.historyX, this.state.dummyMouseX],
+				historyY : [...this.state.historyY, this.state.dummyMouseY],
+			});
+		}, ZIGZAG_RECORD_TIME);
+		this.zigzagDetectTimer = setInterval(() => {
+			this.handleShake();	
+		}, ZIGZAG_DETECT_TIME);
+
 		document.addEventListener("keydown", this.handlePressCtrl, false);
 		document.onclick = this.handleClick;
 		this.setState({
 			dummyMouseX: 50,  // TODO: use task settings
 			dummyMouseY: 50,
+			historyX: [],
+			historyY: [],
 			taskStarted: true,
 		});
 	}
@@ -91,7 +101,6 @@ class TaskDetail extends Component {
 			dummyMouseY += movementY;
 			dummyMouseX = Math.min(Math.max(dummyMouseX, 0), TASK_BOARD_WIDTH);
 			dummyMouseY = Math.min(Math.max(dummyMouseY, 0), TASK_BOARD_HEIGHT);
-			this.countPoints(dummyMouseX, dummyMouseY);
 			return {
 				dummyMouseX: dummyMouseX,
 				dummyMouseY: dummyMouseY
@@ -108,39 +117,27 @@ class TaskDetail extends Component {
 
 	handlePressCtrl(e) {
 		if (e.ctrlKey && !this.state.animationOn) {
-			this.setState({
-				animationOn: true,
-			});
-			this.timer = setInterval(() => {
-				if (this.state.animationOn) {
-					this.setState({animationOn: false});
-					clearInterval(this.timer);
-				}
-			}, ANIMATION_TIME);
+			this.setState({ animationOn: true });
+			this.animate();
 		}
 	}
 
-	shakeTick() {
-		this.setState({
-			prevX: this.state.dummyMouseX,
-			prevY: this.state.dummyMouseY,
-			numPoints: 0
-		})
+	handleShake() {
+		const { historyX, historyY } = this.state;
+		if (!this.state.animationOn && this.zigzag(historyX, historyY) > ZIGZAG_MAX) {
+			this.animate();
+		}
+		this.setState({ historyX: [], historyY: [] });
 	}
 
-	countPoints(x, y) {
-		const diffX = x - this.state.prevX;
-		const diffY = y - this.state.prevY;
-		if (Math.sqrt(diffX * diffX + diffY * diffY) < SHAKE_RADIUS) {
-			this.setState({numPoints: this.state.numPoints + 1});
-		}
-		if (!this.state.animationOn && this.state.numPoints > SHAKE_NUM_POINTS) {
-			this.setState({animationOn: true})
-			this.shakeTempTimer = setInterval(() => {
-				clearInterval(this.shakeTempTimer);
+	animate() {
+		this.setState({animationOn: true});
+		const timer = setInterval(() => {
+			if (this.state.animationOn) {
 				this.setState({animationOn: false});
-			}, 1000);
-		}
+				clearInterval(timer);
+			}
+		}, ANIMATION_TIME); 
 	}
 
 	handleClick() {
@@ -160,7 +157,40 @@ class TaskDetail extends Component {
 		taskBoard.requestPointerLock = taskBoard.requestPointerLock || taskBoard.mozRequestPointerLock;
 		taskBoard.requestPointerLock();
 	}
-	
+
+	zigzag(xs, ys) {
+		let dx = [];
+		let dy = [];
+		for (i = 0; i < xs.length - 1; i++) {
+			dx.push(xs[i + 1] - xs[i]);
+			dy.push(ys[i + 1] - ys[i]);
+		}
+		let inner_prod = Array(dx.length);
+		for (var i = 0; i < inner_prod.length; i++) {
+			inner_prod[i] = new Array(dx.length);
+		}
+
+		for (i = 0; i < dx.length; i++) {
+			for (j = 0; j < dx.length; j++) {
+				inner_prod[i][j] = dx[i] * dx[j] + dy[i] * dy[j];
+			}
+		}
+		var DP = new Array(dx.length);
+		DP[0] = 0;
+		for (var i = 1; i < dx.length; i++) {
+			for (var j = 0; j < i; j++) {
+				var max = 0;
+				if (inner_prod[i][j] < -1) {
+					max = DP[j] + 1;
+				} else {
+					max = DP[j];
+				}
+				DP[i] = max;
+			}
+		}
+		return DP[dx.length-1];
+	}
+
 	renderCover() {
 		return (
 			<div className='task-cover'>
