@@ -85,7 +85,7 @@ class TaskDetail extends Component {
 		const { task } = this.props;
 		this.setState(() => {
 			return {
-				dummyMouseX: task.start.x * TASK_BOARD_WIDTH,  // TODO: use task settings
+				dummyMouseX: task.start.x * TASK_BOARD_WIDTH,
 				dummyMouseY: task.start.y * TASK_BOARD_HEIGHT,
 				targetX: task.target.x * TASK_BOARD_WIDTH,
 				targetY: task.target.y * TASK_BOARD_HEIGHT,
@@ -150,7 +150,7 @@ class TaskDetail extends Component {
 
 	handleClick() {
 		const { dummyMouseX, dummyMouseY, targetX, targetY } = this.state;
-		const diffX = Math.abs(targetX - dummyMouseX);  // TODO change target to circle
+		const diffX = Math.abs(targetX - dummyMouseX);
 		const diffY = Math.abs(targetY - dummyMouseY);
 		if (diffX < 50 && diffY < 50) {
 			this.handleTaskComplete();
