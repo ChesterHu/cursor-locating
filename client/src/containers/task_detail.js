@@ -256,6 +256,7 @@ class TaskDetail extends Component {
 }
 
 function mapStateToProps({ tasks, activeTask, images }) {
+	console.log(activeTask, tasks.length);
 	if (activeTask < tasks.length) {
 		return {
 			task: tasks[activeTask],
