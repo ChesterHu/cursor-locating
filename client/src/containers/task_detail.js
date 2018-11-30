@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Motion, spring } from 'react-motion';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Button from '@material-ui/core/Button';
@@ -215,14 +216,17 @@ class TaskDetail extends Component {
 
 	renderCover() {
 		const { taskIndex, totalTasks } = this.props;
-		const progress = `${taskIndex} / ${totalTasks}`;
+		const progress = `${taskIndex + 1} / ${totalTasks}`;
+
 		return (
-			<div className='task-cover'>
+			<div key={progress} className='task-cover'>
 				<Paper
 					className='task-information'
-					id={progress}
 					alignItems='center'
-					style={{margin: '20px', padding: '10px', width: '600px'}}> 
+					style={{		
+						margin: '20px',
+						padding: '10px',
+						width: '600px'}}> 
 					<h3>Task {progress}</h3>
 					<p>{this.props.task.info}</p>
 					<p>Please press space to start the task</p>
@@ -234,7 +238,10 @@ class TaskDetail extends Component {
 
 	renderTask() {
 		return (
-			<div style={toCSS(this.props.images[this.props.task.image])}>
+			<div
+				key={this.props.taskIndex}
+				className='task'
+				style={toCSS(this.props.images[this.props.task.image])}>
 				<img 
 					className='dummy-pointer'
 					src={require('../resource/img/cursor-xl.png')}

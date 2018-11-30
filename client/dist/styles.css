@@ -55,7 +55,12 @@ li {
 }
 
 .task-information {
-	animation: slide 1s;
+	position: absolute;
+	animation: slide 700ms;
+}
+
+.task {
+	animation: fadein 1s;
 }
 
 @keyframes fadein {
@@ -64,6 +69,6 @@ li {
 }
 
 @keyframes slide {
-	from { left: -100px; }
-	to { left: 100px; }
+	from { top: -100%; }
+	to { top: 0%; }
 }
