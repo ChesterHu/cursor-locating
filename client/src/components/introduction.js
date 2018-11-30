@@ -44,7 +44,7 @@ function Introduction(props) {
 					space key, an image in which the pointer is hidden will be unveiled. You need to 
 					find your pointer and click on the target. Tasks are timed and recoreded, please
 					start a task only when you are ready and stay focused within each task (usually
-					complete time &lt 5 seconds). You may choose to trigger or not to trigger the
+					complete time &lt; 5 seconds). You may choose to trigger or not to trigger the
 					expansion as you wish, when it is available.
 				</p>
 				<p>
