@@ -214,11 +214,12 @@ class TaskDetail extends Component {
 	}
 
 	renderCover() {
+		const { taskIndex, totalTasks } = this.props;
 		return (
 			<div className='task-cover'>
-				<Paper> 
-					<h3>Task {this.props.task.task_id}</h3>
-					<h4>{this.props.task.info}</h4>
+				<Paper style={{margin: '20px', padding: '10px'}}> 
+					<h3>Task {`${taskIndex + 1} / ${totalTasks}`}</h3>
+					<p>{this.props.task.info}</p>
 					<p>Please press space to start the task</p>
 				</Paper>
 				<Target />
@@ -260,6 +261,8 @@ function mapStateToProps({ tasks, activeTask, images }) {
 	if (activeTask < tasks.length) {
 		return {
 			task: tasks[activeTask],
+			taskIndex: activeTask,
+			totalTasks: tasks.length,
 			images,
 		};
 	}
