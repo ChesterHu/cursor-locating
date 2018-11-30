@@ -69,6 +69,7 @@ class TaskDetail extends Component {
 		document.removeEventListener("keydown", this.handlePressSpace, false);
 		if (true) {
 			this.zigzagRecordTimer = setInterval(() => {
+				if (this.state.animationOn) return;
 				const { historyX, historyY, dummyMouseX, dummyMouseY } = this.state;
 				this.setState({
 					historyX: [...historyX, dummyMouseX],
@@ -76,6 +77,7 @@ class TaskDetail extends Component {
 				});
 			}, ZIGZAG_RECORD_TIME);
 			this.zigzagDetectTimer = setInterval(() => {
+				if (this.state.animationOn) return;
 				this.handleShake();	
 			}, ZIGZAG_DETECT_TIME);
 		} else {
