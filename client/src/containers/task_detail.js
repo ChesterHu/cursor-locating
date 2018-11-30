@@ -176,14 +176,15 @@ class TaskDetail extends Component {
 	renderTask() {
 		return (
 			<div style={toCSS(this.props.task)}>
-				<div 
+				<img 
 					className='dummy-pointer'
+					src={require('../resource/img/cursor-xl.png')}
 					style={{
 						position: 'absolute', 
 						top: `${this.state.dummyMouseY}px`, 
 						left: `${this.state.dummyMouseX}px`,
-						width: `${25 * (1 + 3 * this.state.animationOn)}px`,
-						height: `${25 * (1 + 3 * this.state.animationOn)}px`}}/>
+						width: `${20 * (1 + 3 * this.state.animationOn)}px`,
+						height: `${20 * (1 + 3 * this.state.animationOn)}px`}}/>
 				<Target />
 			</div>
 		);

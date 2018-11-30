@@ -27,9 +27,7 @@
 }
 
 .dummy-pointer {
-	border-radius: 99px;
 	z-index: 999;
-	border: 1px solid black;
 	transition:width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
