@@ -9,7 +9,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-const RECEIVER_URL = '/post_receiver.php';
+const RECEIVER_URL = '/cs889/cursor-locating/client/dist/post_receiver.php';
 
 class Questionnaire extends Component {
 	constructor(props) {
