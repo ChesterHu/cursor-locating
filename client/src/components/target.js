@@ -4,11 +4,14 @@ import { bindActionCreators } from 'redux';
 import Button from '@material-ui/core/Button';
 
 
+const TASK_BOARD_WIDTH = screen.width;
+const TASK_BOARD_HEIGHT = screen.height;
+
 const toCSS = ({ target }) => {
 	return {
 		position: 'absolute',
-		top: target.top + 'px',
-		left: target.left + 'px'
+		top: target.y * TASK_BOARD_HEIGHT + 'px',
+		left: target.x * TASK_BOARD_WIDTH  + 'px'
 	};
 };
 

@@ -15,14 +15,14 @@ const ZIGZAG_MAX = 2;
 const ANIMATION_TIME = 1000;  // ms
 const RECORD_TIME = 100;
 
-const toCSS = (task) => {
+const toCSS = (imgUrl) => {
 	return {
 		width:'100%',
 		height:'100%',
 		top: 0,
 		left: 0,
 		position: 'absolute',
-		backgroundImage: `url(${task.img})`,
+		backgroundImage: `url(${imgUrl})`,
 		backgroundSize: 'cover',
 		backgroundPosition: 'center'
 	}
@@ -67,7 +67,7 @@ class TaskDetail extends Component {
 
 	startTask() {
 		document.removeEventListener("keydown", this.handlePressSpace, false);
-		if (true) {
+		if (this.props.task.setting === 'Shake') {
 			this.zigzagRecordTimer = setInterval(() => {
 				if (this.state.animationOn) return;
 				const { historyX, historyY, dummyMouseX, dummyMouseY } = this.state;
@@ -80,14 +80,17 @@ class TaskDetail extends Component {
 				if (this.state.animationOn) return;
 				this.handleShake();	
 			}, ZIGZAG_DETECT_TIME);
-		} else {
+		} else if (this.props.task.setting === 'Ctrl'){
 			document.addEventListener("keydown", this.handlePressCtrl, false);
 		}
 		document.onclick = this.handleClick;
+		const { task } = this.props;
 		this.setState(() => {
 			return {
-				dummyMouseX: 50,  // TODO: use task settings
-				dummyMouseY: 50,
+				dummyMouseX: task.start.x * TASK_BOARD_WIDTH,  // TODO: use task settings
+				dummyMouseY: task.start.y * TASK_BOARD_HEIGHT,
+				targetX: task.target.x * TASK_BOARD_WIDTH,
+				targetY: task.target.y * TASK_BOARD_HEIGHT,
 				historyX: [],
 				historyY: [],
 				recordX: [],
@@ -148,9 +151,7 @@ class TaskDetail extends Component {
 	}
 
 	handleClick() {
-		const { dummyMouseX, dummyMouseY } = this.state;
-		const targetX = this.props.task.target.left;
-		const targetY = this.props.task.target.top;
+		const { dummyMouseX, dummyMouseY, targetX, targetY } = this.state;
 		const diffX = Math.abs(targetX - dummyMouseX);  // TODO change target to circle
 		const diffY = Math.abs(targetY - dummyMouseY);
 		if (diffX < 50 && diffY < 50) {
@@ -219,6 +220,7 @@ class TaskDetail extends Component {
 			<div className='task-cover'>
 				<Paper> 
 					<h3>Task {this.props.task.task_id}</h3>
+					<h4>{this.props.task.info}</h4>
 					<p>Please press space to start the task</p>
 				</Paper>
 				<Target />
@@ -228,7 +230,7 @@ class TaskDetail extends Component {
 
 	renderTask() {
 		return (
-			<div style={toCSS(this.props.task)}>
+			<div style={toCSS(this.props.images[this.props.task.image])}>
 				<img 
 					className='dummy-pointer'
 					src={require('../resource/img/cursor-xl.png')}
@@ -255,10 +257,11 @@ class TaskDetail extends Component {
 	}
 }
 
-function mapStateToProps({ tasks, activeTask }) {
+function mapStateToProps({ tasks, activeTask, images }) {
 	if (activeTask < tasks.length) {
 		return {
-			task: tasks[activeTask]
+			task: tasks[activeTask],
+			images,
 		};
 	}
 }

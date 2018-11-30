@@ -1,4 +1,4 @@
-import { tasks } from '../resource/tasks';
+import { tasks } from '../resource/tasks_pygen';
 
 
 export default function() {
