@@ -684,4 +684,4 @@ export const taskC = [{
 }
 ,
 ]
-export const task = [taskA, taskB, taskC]
+export const tasks = [taskA, taskB, taskC]

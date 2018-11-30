@@ -43,5 +43,4 @@ function mapDispatchToProps(dispatch) {
 	return bindActionCreators({ changeExperimentState }, dispatch);
 }
 
-
 export default connect(mapStateToProps, mapDispatchToProps)(Introduction);
