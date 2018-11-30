@@ -96,6 +96,7 @@ class TaskDetail extends Component {
 				recordY: [],
 				startTime: Date.now(),
 				taskStarted: true,
+				isTriggered: false
 			}
 		});
 		this.recordTimer = setInterval(() => this.record(), RECORD_TIME);
@@ -126,7 +127,6 @@ class TaskDetail extends Component {
 
 	handlePressCtrl(e) {
 		if (e.ctrlKey && !this.state.animationOn) {
-			this.setState({ animationOn: true });
 			this.animate();
 		}
 	}
@@ -143,7 +143,10 @@ class TaskDetail extends Component {
 		this.setState({animationOn: true});
 		const timer = setInterval(() => {
 			if (this.state.animationOn) {
-				this.setState({animationOn: false});
+				this.setState({
+					animationOn: false,
+					isTriggered: true,
+				});
 				clearInterval(timer);
 			}
 		}, ANIMATION_TIME); 
@@ -159,9 +162,9 @@ class TaskDetail extends Component {
 	}
 
 	handleTaskComplete() {
-		const { startTime, recordX, recordY } = this.state;
+		const { startTime, recordX, recordY, isTriggered } = this.state;
 		this.props.clickTarget();
-		this.props.completeTask(Date.now() - startTime, recordX, recordY, this.props.task.id);
+		this.props.completeTask(Date.now() - startTime, recordX, recordY, this.props.task.id, isTriggered);
 		this.resetTaskState();
 	}
 
@@ -269,7 +272,6 @@ class TaskDetail extends Component {
 }
 
 function mapStateToProps({ tasks, activeTask, images }) {
-	console.log(activeTask, tasks.length);
 	if (activeTask < tasks.length) {
 		return {
 			task: tasks[activeTask],

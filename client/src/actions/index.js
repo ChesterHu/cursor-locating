@@ -6,10 +6,10 @@ export function clickTarget() {
 	};
 }
 
-export function completeTask(timeUsed, recordX, recordY, taskId) {
+export function completeTask(timeUsed, recordX, recordY, taskId, isTriggered) {
 	return {
 		type: actionType.COMPLETE_TASK,
-		payload: { timeUsed, recordX, recordY, taskId }
+		payload: { timeUsed, recordX, recordY, taskId, isTriggered }
 	};
 }
 
