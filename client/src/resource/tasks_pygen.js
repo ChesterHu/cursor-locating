@@ -11,26 +11,8 @@ export const tasks = [{
 "image":5,
 "info":"This is a sample task, you may move your mouse around",
 "setting":"None",
-"start":{ x:0.261500, y:0.207000},
+"start":{ x:0.448500, y:0.337500},
 "target":{x:0.500000, y:0.500000}
-}
-,
-{
-"id":"1-0-1-None",
-"image":1,
-"info":"There is no cursor enhancement in this task",
-"setting":"None",
-"start":{ x:0.140000, y:0.797500},
-"target":{x:0.500000, y:0.500000}
-}
-,
-{
-"id":"0-1-0-None",
-"image":0,
-"info":"There is no cursor enhancement in this task",
-"setting":"None",
-"start":{ x:0.643000, y:0.460500},
-"target":{x:0.400000, y:0.500000}
 }
 ,
 {
@@ -38,34 +20,7 @@ export const tasks = [{
 "image":0,
 "info":"There is no cursor enhancement in this task",
 "setting":"None",
-"start":{ x:0.140000, y:0.797500},
-"target":{x:0.400000, y:0.500000}
-}
-,
-{
-"id":"1-1-1-None",
-"image":1,
-"info":"There is no cursor enhancement in this task",
-"setting":"None",
-"start":{ x:0.824500, y:0.807000},
-"target":{x:0.500000, y:0.500000}
-}
-,
-{
-"id":"1-0-0-None",
-"image":1,
-"info":"There is no cursor enhancement in this task",
-"setting":"None",
-"start":{ x:0.261500, y:0.207000},
-"target":{x:0.500000, y:0.500000}
-}
-,
-{
-"id":"0-1-1-None",
-"image":0,
-"info":"There is no cursor enhancement in this task",
-"setting":"None",
-"start":{ x:0.824500, y:0.807000},
+"start":{ x:0.490500, y:0.640500},
 "target":{x:0.400000, y:0.500000}
 }
 ,
@@ -74,17 +29,8 @@ export const tasks = [{
 "image":0,
 "info":"There is no cursor enhancement in this task",
 "setting":"None",
-"start":{ x:0.261500, y:0.207000},
+"start":{ x:0.448500, y:0.337500},
 "target":{x:0.400000, y:0.500000}
-}
-,
-{
-"id":"1-1-0-None",
-"image":1,
-"info":"There is no cursor enhancement in this task",
-"setting":"None",
-"start":{ x:0.643000, y:0.460500},
-"target":{x:0.500000, y:0.500000}
 }
 ,
 ]

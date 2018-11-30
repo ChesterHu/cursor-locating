@@ -24,10 +24,10 @@ settings = [
 import random
 start = [
     [(
-        (random.randint(2, 998) / 1000 + i) * 0.25, 
-        (random.randint(2, 998) / 1000 + j) * 0.25
-    ) for j in range(4)]
-    for i in range(4)
+        (random.randint(2, 998) / 1000 + i) * 0.5, 
+        (random.randint(2, 998) / 1000 + j) * 0.5
+    ) for j in range(2)]
+    for i in range(2)
 ]
 
 target = [
@@ -61,10 +61,8 @@ def new_task(image, posi, posj, setting, info):
         + repr("target") + ":" + ("{x:%f, y:%f}"%target[image])\
         + "\n}\n"
 
-print(new_task(0, 1, 3, "None", "hello"))
 
-ij_combinations = [(img, i, j) for img in range(5) for i in range(4) for j in range(4)]
-print(ij_combinations)
+ij_combinations = [(img, i, j) for img in range(1) for i in range(1) for j in range(2)]
 
 random.shuffle(ij_combinations)
 ij_shuffle1 = ij_combinations[:]
@@ -80,7 +78,7 @@ task_var_script += ",\n"
 for img, i, j in ij_shuffle1:
     task_var_script += new_task(img, i, j, 'None', "There is no cursor enhancement in this task")
     task_var_script += ",\n"
-
+'''
 task_var_script += new_task(5, 0, 0, 'Ctrl', "This is a sample task, you may move your mouse around")
 task_var_script += ",\n"
 for img, i, j in ij_shuffle2:
@@ -92,6 +90,8 @@ task_var_script += ",\n"
 for img, i, j in ij_shuffle3:
     task_var_script += new_task(img, i, j, 'Shake', "When you shake your cursor, it is magnified")
     task_var_script += ",\n"
+'''
+
 task_var_script += "]\n"
 
 
