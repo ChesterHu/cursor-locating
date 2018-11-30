@@ -74,11 +74,8 @@ class TaskDetail extends Component {
 					historyX: [...historyX, dummyMouseX],
 					historyY: [...historyY, dummyMouseY],
 				});
+				this.handleShake();
 			}, ZIGZAG_RECORD_TIME);
-			this.zigzagDetectTimer = setInterval(() => {
-				if (this.state.animationOn) return;
-				this.handleShake();	
-			}, ZIGZAG_DETECT_TIME);
 		} else if (this.props.task.setting === 'Ctrl'){
 			document.addEventListener("keydown", this.handlePressCtrl, false);
 		}
@@ -133,10 +130,11 @@ class TaskDetail extends Component {
 
 	handleShake() {
 		const { historyX, historyY } = this.state;
+		console.log(historyX);
 		if (!this.state.animationOn && this.zigzag(historyX, historyY) > ZIGZAG_MAX) {
 			this.animate();
+			this.setState({ historyX: [], historyY: [] });
 		}
-		this.setState({ historyX: [], historyY: [] });
 	}
 
 	animate() {
