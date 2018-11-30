@@ -17,6 +17,5 @@ export default function(state = initState(), action) {
 		state.recordY = [...state.recordY, recordY];
 		state.taskIds = [...state.taskIds, taskId]
 	}
-	console.log(state.taskIds);
 	return state;
 }
