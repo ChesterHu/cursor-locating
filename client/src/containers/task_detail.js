@@ -202,9 +202,11 @@ class TaskDetail extends Component {
 }
 
 function mapStateToProps({ tasks, activeTask }) {
-	return {
-		task: tasks[activeTask]
-	};
+	if (activeTask < tasks.length) {
+		return {
+			task: tasks[activeTask]
+		};
+	}
 }
 
 function mapDispatchToProps(dispatch) {
