@@ -5,7 +5,7 @@ import ActiveTaskReducer from './reducer_active_task';
 
 const rootReducer = combineReducers({
 	tasks: TaskReducer,
-	activeTask: ActiveTaskReducer
+	activeTask: ActiveTaskReducer,
 });
 
 export default rootReducer;
