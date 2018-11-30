@@ -11,7 +11,7 @@ import { clickTarget, completeTask } from '../actions/index';
 const TASK_BOARD_WIDTH = screen.width;
 const TASK_BOARD_HEIGHT = screen.height;
 const ZIGZAG_RECORD_TIME = 100;
-const ZIGZAG_DETECT_TIME = 1500;
+const ZIGZAG_DETECT_TIME = 700;
 const ZIGZAG_MAX = 2;
 const ANIMATION_TIME = 1000;  // ms
 const RECORD_TIME = 100;
@@ -161,7 +161,7 @@ class TaskDetail extends Component {
 	handleTaskComplete() {
 		const { startTime, recordX, recordY } = this.state;
 		this.props.clickTarget();
-		this.props.completeTask(Date.now() - startTime, recordX, recordY);
+		this.props.completeTask(Date.now() - startTime, recordX, recordY, this.props.task.id);
 		this.resetTaskState();
 	}
 
