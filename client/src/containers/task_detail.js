@@ -217,7 +217,9 @@ class TaskDetail extends Component {
 		const { taskIndex, totalTasks } = this.props;
 		return (
 			<div className='task-cover'>
-				<Paper style={{margin: '20px', padding: '10px'}}> 
+				<Paper
+					alignItems='center'
+					style={{margin: '20px', padding: '10px', width: '600px'}}> 
 					<h3>Task {`${taskIndex + 1} / ${totalTasks}`}</h3>
 					<p>{this.props.task.info}</p>
 					<p>Please press space to start the task</p>
