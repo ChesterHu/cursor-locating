@@ -69,19 +69,20 @@ class TaskDetail extends Component {
 	}
 
 	startTask() {
-
 		document.removeEventListener("keydown", this.handlePressSpace, false);
-		this.zigzagRecordTimer = setInterval(() => {
-			this.setState({
-				historyX : [...this.state.historyX, this.state.dummyMouseX],
-				historyY : [...this.state.historyY, this.state.dummyMouseY],
-			});
-		}, ZIGZAG_RECORD_TIME);
-		this.zigzagDetectTimer = setInterval(() => {
-			this.handleShake();	
-		}, ZIGZAG_DETECT_TIME);
-
-		document.addEventListener("keydown", this.handlePressCtrl, false);
+		if (true) {
+			this.zigzagRecordTimer = setInterval(() => {
+				this.setState({
+					historyX : [...this.state.historyX, this.state.dummyMouseX],
+					historyY : [...this.state.historyY, this.state.dummyMouseY],
+				});
+			}, ZIGZAG_RECORD_TIME);
+			this.zigzagDetectTimer = setInterval(() => {
+				this.handleShake();	
+			}, ZIGZAG_DETECT_TIME);
+		} else {
+			document.addEventListener("keydown", this.handlePressCtrl, false);
+		}
 		document.onclick = this.handleClick;
 		this.setState({
 			dummyMouseX: 50,  // TODO: use task settings
