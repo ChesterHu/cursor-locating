@@ -4,6 +4,16 @@
 	font-family: 'Roboto', sans-serif;
 }
 
+p {
+	margin: 20px;
+	text-align: justify;
+}
+
+li {
+	margin: 20px;
+	text-align: justify;
+}
+
 .ripple {
 	width: 50px;
 	height: 50px;
@@ -35,3 +45,17 @@
 	margin-top: 30px;
 	margin-bottom: 30px;
 }
+
+.introduction {
+	animation: fadein 2s;
+}
+
+.questionnaire {
+	animation: fadein 2s
+}
+
+@keyframes fadein {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
