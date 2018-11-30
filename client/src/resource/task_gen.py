@@ -24,8 +24,8 @@ settings = [
 import random
 start = [
     [(
-        (random.randint(2, 998) / 1000 + i) * 0.5, 
-        (random.randint(2, 998) / 1000 + j) * 0.5
+        (random.randint(15, 985) / 1000 + i) * 0.5, 
+        (random.randint(15, 985) / 1000 + j) * 0.5
     ) for j in range(2)]
     for i in range(2)
 ]
@@ -39,16 +39,6 @@ target = [
     (0.5, 0.5)
 ]
 
-'''
-task = {
-    "id" : "t1",
-    "image" : 0,
-    "info" : "string",
-    "setting" : ['None', 'Ctrl', 'Shake'],
-    "start" : { x : 0.3, y : 0.6 },
-    "target" : { x : 0.4, y: 0.7, }
-}
-'''
 
 
 def new_task(image, posi, posj, setting, info):
@@ -62,7 +52,7 @@ def new_task(image, posi, posj, setting, info):
         + "\n}\n"
 
 
-ij_combinations = [(img, i, j) for img in range(1) for i in range(1) for j in range(2)]
+ij_combinations = [(img, i, j) for img in range(6) for i in range(2) for j in range(2)]
 
 random.shuffle(ij_combinations)
 ij_shuffle1 = ij_combinations[:]
@@ -71,31 +61,37 @@ ij_shuffle2 = ij_combinations[:]
 random.shuffle(ij_combinations)
 ij_shuffle3 = ij_combinations[:]
 
-task_var_script = "export const tasks = ["
-
-task_var_script += new_task(5, 0, 0, 'None', "This is a sample task, you may move your mouse around")
-task_var_script += ",\n"
+taskA_var_script = "export const taskA = ["
+taskA_var_script += new_task(5, 0, 0, 'None', "This is a sample task, you may move your mouse around")
+taskA_var_script += ",\n"
 for img, i, j in ij_shuffle1:
-    task_var_script += new_task(img, i, j, 'None', "There is no cursor enhancement in this task")
-    task_var_script += ",\n"
-'''
-task_var_script += new_task(5, 0, 0, 'Ctrl', "This is a sample task, you may move your mouse around")
-task_var_script += ",\n"
+    taskA_var_script += new_task(img, i, j, 'None', "There is no cursor enhancement in this task")
+    taskA_var_script += ",\n"
+taskA_var_script += "]\n"
+
+
+taskB_var_script = "export const taskB = ["
+taskB_var_script += new_task(5, 0, 0, 'Ctrl', "This is a sample task, you may move your mouse around")
+taskB_var_script += ",\n"
 for img, i, j in ij_shuffle2:
-    task_var_script += new_task(img, i, j, 'Ctrl', "You may press Ctrl to magnify your cursor")
-    task_var_script += ",\n"
+    taskB_var_script += new_task(img, i, j, 'Ctrl', "You may press Ctrl to magnify your cursor")
+    taskB_var_script += ",\n"
+taskB_var_script += "]\n"
 
-task_var_script += new_task(5, 0, 0, 'Shake', "This is a sample task, you may move your mouse around")
-task_var_script += ",\n"
+
+taskC_var_script = "export const taskC = ["
+taskC_var_script += new_task(5, 0, 0, 'Shake', "This is a sample task, you may move your mouse around")
+taskC_var_script += ",\n"
 for img, i, j in ij_shuffle3:
-    task_var_script += new_task(img, i, j, 'Shake', "When you shake your cursor, it is magnified")
-    task_var_script += ",\n"
-'''
-
-task_var_script += "]\n"
+    taskC_var_script += new_task(img, i, j, 'Shake', "When you shake your cursor, it is magnified")
+    taskC_var_script += ",\n"
+taskC_var_script += "]\n"
 
 
-f = open("tasks_pygen.js", 'w')
+f = open("tasks_pygen_grouped.js", 'w')
 f.write(images_var_script)
-f.write(task_var_script)
+f.write(taskA_var_script)
+f.write(taskB_var_script)
+f.write(taskC_var_script)
+f.write("export const task = [taskA, taskB, taskC]\n")
 f.close()
