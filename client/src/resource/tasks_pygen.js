@@ -19,7 +19,7 @@ export const tasks = [{
 "id":"0-0-1-None",
 "image":0,
 "info":"There is no cursor enhancement in this task",
-"setting":"None",
+"setting":"Shake",
 "start":{ x:0.490500, y:0.640500},
 "target":{x:0.400000, y:0.500000}
 }
@@ -28,7 +28,7 @@ export const tasks = [{
 "id":"0-0-0-None",
 "image":0,
 "info":"There is no cursor enhancement in this task",
-"setting":"None",
+"setting":"Ctrl",
 "start":{ x:0.448500, y:0.337500},
 "target":{x:0.400000, y:0.500000}
 }
