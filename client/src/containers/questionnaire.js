@@ -20,11 +20,13 @@ class Questionnaire extends Component {
 			scoreCtrl: 1,
 			scoreShake: 1,
 			comment: '',
+			submitted: false,
 		};
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 	
 	handleSubmit(e) {
+		this.setState({submitted: true});
 		e.preventDefault();
 		let request = new XMLHttpRequest();
 		request.open('POST', RECEIVER_URL, true);
@@ -59,60 +61,62 @@ class Questionnaire extends Component {
 				alignItems="center"
 				style={{ minHeight: '100vh', marginTop:'40px' }}
 			>
-			<Paper style={{padding:'30px'}}>
-				<h3>Final submit form</h3>
-				<form onSubmit={this.handleSubmit}>
-					<div className='form-item'>
-						<TextField
-							id='name'
-							label='Name'
-							value={this.state.name}
-							onChange={(e)=> this.setState({name: e.target.value})}
-						/>
-					</div>
-					<div className='form-item'>
-						<FormLabel component="legend">Input Device</FormLabel>
-						<RadioGroup 
-							aria-label='Device'
-							value={this.state.device}
-							onChange={e => this.setState({device: e.target.value})}
-							row
-						>
-							<FormControlLabel value='mouse' control={<Radio color='primary' />} label='Mouse'/>
-							<FormControlLabel value='touchpad' control={<Radio />} label='Touchpad'/>
-						</RadioGroup>
-					</div>
-					<div className='form-item'>
-						<FormLabel component="legend">Please rate your experience of Ctrl Key</FormLabel>
-						{this.renderLevelSelect(this.state.scoreCtrl, (e)=>this.setState({scoreCtrl: e.target.value}), 5)}
-					</div>
-					<div className='form-item'>
-						<FormLabel component="legend">Please rate your experience of Shake</FormLabel>
-						{this.renderLevelSelect(this.state.scoreShake, (e)=>this.setState({scoreShake: e.target.value}), 5)}
-					</div>
-					<div className='form-item'>
-						<TextField
-							id="outlined-full-width"
-							label="Comment"
-							value={this.state.comment}
-							onChange={(e) => this.setState({comment: e.target.value})}
-							placeholder="Your comment"
-							helperText="You can write any comment or any issue you have for the experiment"
-							fullWidth
-							multiline
-							rows='2'
-							margin="normal"
-							variant="outlined"
-							InputLabelProps={{
-								shrink: true,
-							}}
-						/>
-					</div>
-					<div className='form-item'>
-						<Button type='submit' variant='contained' color='secondary'>Submit</Button>
-					</div>
-				</form>
-			</Paper>
+				<Paper style={{padding:'30px'}}>
+					{!this.state.submitted && 	
+						<form onSubmit={this.handleSubmit}>
+							<h3>Final submit form</h3>
+							<div className='form-item'>
+								<TextField
+									id='name'
+									label='Name'
+									value={this.state.name}
+									onChange={(e)=> this.setState({name: e.target.value})}
+								/>
+							</div>
+							<div className='form-item'>
+								<FormLabel component="legend">Input Device</FormLabel>
+								<RadioGroup 
+									aria-label='Device'
+									value={this.state.device}
+									onChange={e => this.setState({device: e.target.value})}
+									row
+								>
+									<FormControlLabel value='mouse' control={<Radio color='primary' />} label='Mouse'/>
+									<FormControlLabel value='touchpad' control={<Radio />} label='Touchpad'/>
+								</RadioGroup>
+							</div>
+							<div className='form-item'>
+								<FormLabel component="legend">Please rate your experience of Ctrl Key</FormLabel>
+								{this.renderLevelSelect(this.state.scoreCtrl, (e)=>this.setState({scoreCtrl: e.target.value}), 5)}
+							</div>
+							<div className='form-item'>
+								<FormLabel component="legend">Please rate your experience of Shake</FormLabel>
+								{this.renderLevelSelect(this.state.scoreShake, (e)=>this.setState({scoreShake: e.target.value}), 5)}
+							</div>
+							<div className='form-item'>
+								<TextField
+									id="outlined-full-width"
+									label="Comment"
+									value={this.state.comment}
+									onChange={(e) => this.setState({comment: e.target.value})}
+									placeholder="Your comment"
+									helperText="You can write any comment or any issue you have for the experiment"
+									fullWidth
+									multiline
+									rows='2'
+									margin="normal"
+									variant="outlined"
+									InputLabelProps={{
+										shrink: true,
+									}}
+								/>
+							</div>
+							<div className='form-item'>
+								<Button type='submit' variant='contained' color='secondary'>Submit</Button>
+							</div>
+						</form>}
+						{this.state.submitted && <h1> Thank You! </h1>}
+				</Paper>
 			</Grid>
 		);
 	}
