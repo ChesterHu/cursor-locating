@@ -14,7 +14,8 @@ const ZIGZAG_RECORD_TIME = 100;
 const ZIGZAG_DETECT_TIME = 700;
 const ZIGZAG_MAX = 2;
 const ANIMATION_TIME = 1000;  // ms
-const RECORD_TIME = 100;
+const RECORD_TIME = 20;
+const MAX_RECORD = 6000;
 
 const toCSS = (imgUrl) => {
 	return {
@@ -56,7 +57,7 @@ class TaskDetail extends Component {
 		document.removeEventListener("keydown", this.handlePressCtrl, false);
 		document.onclick = () => {};
 		clearInterval(this.zigzagRecordTimer);
-		clearInterval(this.zigzagDetectTimer);
+		clearInterval(this.clearRecordCacheTimer);
 		clearInterval(this.recordTimer);
 		this.setState({
 			taskStarted: false,
@@ -76,21 +77,32 @@ class TaskDetail extends Component {
 				});
 				this.handleShake();
 			}, ZIGZAG_RECORD_TIME);
+			this.clearRecordCacheTimer = setInterval(() => {
+				const { historyX, historyY } = this.state;
+				if (historyX.length >= 2000) {
+					this.setState({historyX: [], historyY: []});
+				}
+			}, MAX_RECORD);
 		} else if (this.props.task.setting === 'Ctrl'){
 			document.addEventListener("keydown", this.handlePressCtrl, false);
 		}
 		document.onclick = this.handleClick;
 		const { task } = this.props;
+		const startX = Math.floor(task.start.x * TASK_BOARD_WIDTH);
+		const startY = Math.floor(task.start.y * TASK_BOARD_HEIGHT);
+		const targetX = Math.floor(task.target.x * TASK_BOARD_WIDTH);
+		const targetY = Math.floor(task.target.y * TASK_BOARD_HEIGHT);
+		
 		this.setState(() => {
 			return {
-				dummyMouseX: task.start.x * TASK_BOARD_WIDTH,
-				dummyMouseY: task.start.y * TASK_BOARD_HEIGHT,
-				targetX: task.target.x * TASK_BOARD_WIDTH,
-				targetY: task.target.y * TASK_BOARD_HEIGHT,
+				dummyMouseX: startX,
+				dummyMouseY: startY,
+				targetX: targetX,
+				targetY: targetY,
 				historyX: [],
 				historyY: [],
-				recordX: [],
-				recordY: [],
+				recordX: [startX],
+				recordY: [startY],
 				startTime: Date.now(),
 				taskStarted: true,
 				isTriggered: false
@@ -106,11 +118,11 @@ class TaskDetail extends Component {
 			let { dummyMouseX, dummyMouseY } = this.state;
 			dummyMouseX += movementX;
 			dummyMouseY += movementY;
-			dummyMouseX = Math.min(Math.max(dummyMouseX, 0), TASK_BOARD_WIDTH * 0.99);
-			dummyMouseY = Math.min(Math.max(dummyMouseY, 0), TASK_BOARD_HEIGHT * 0.99);
+			dummyMouseX = Math.min(Math.max(dummyMouseX, 0), TASK_BOARD_WIDTH * 0.97);
+			dummyMouseY = Math.min(Math.max(dummyMouseY, 0), TASK_BOARD_HEIGHT * 0.97);
 			return {
-				dummyMouseX: dummyMouseX,
-				dummyMouseY: dummyMouseY
+				dummyMouseX: Math.floor(dummyMouseX),
+				dummyMouseY: Math.floor(dummyMouseY)
 			}
 		});
 	}
@@ -130,7 +142,6 @@ class TaskDetail extends Component {
 
 	handleShake() {
 		const { historyX, historyY } = this.state;
-		console.log(historyX);
 		if (!this.state.animationOn && this.zigzag(historyX, historyY) > ZIGZAG_MAX) {
 			this.animate();
 			this.setState({ historyX: [], historyY: [] });
@@ -168,6 +179,7 @@ class TaskDetail extends Component {
 
 	record() {
 		const { recordX, recordY, dummyMouseX, dummyMouseY } = this.state;
+		if (recordX.length > MAX_RECORD) return;
 		this.setState(() => {
 			return {
 				recordX: [...recordX, dummyMouseX],

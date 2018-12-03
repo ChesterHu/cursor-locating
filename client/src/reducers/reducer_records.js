@@ -2,6 +2,8 @@ import * as actionType from '../actions/constants';
 
 const initState = () => {
 	return {
+		screenWidth: screen.width,
+		screenHeight: screen.height,
 		timeUsed: [],
 		recordX: [],
 		recordY: [],

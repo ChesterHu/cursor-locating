@@ -27,8 +27,7 @@ export const slides = [
 		return (
 			<div>
 				<h2>Temporary Resizing</h2>
-				<h4>MacOS introduced this feature to help with the problem:</h4>
-				<p>Shaking and resizing (check it out if you’re using MacOS now.</p>
+				<p>MacOS introduced this feature to help with the problem. Shaking and resizing (check it out if you’re using MacOS now)</p>
 				<img src={require('./img/slide-img-shake.png')}/>
 			</div>
 		);
@@ -51,7 +50,7 @@ export const slides = [
 		return (
 			<div>
 				<h2>Experiment Tasks</h2>
-				<h4>Our experiment consists of a series of pointing tasks, in each of these task:</h4>
+				<p>Our experiment consists of a series of pointing tasks, in each of these task:</p>
 				<ul>
 					<li>You are informed about the position of a target</li>
 					<li>Press space when you are ready</li>
