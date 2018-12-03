@@ -51,6 +51,10 @@ class TaskDetail extends Component {
 	componentDidMount() {
 		this.resetTaskState();
 	}
+	
+	componentWillUnmount() {
+		document.removeEventListener("keydown", this.handlePressSpace, false);
+	}
 
 	resetTaskState() {
 		document.addEventListener("keydown", this.handlePressSpace, false);
@@ -171,10 +175,13 @@ class TaskDetail extends Component {
 	}
 
 	handleTaskComplete() {
+		document.removeEventListener("keydown", this.handlePressSpace, false);
 		const { startTime, recordX, recordY, isTriggered } = this.state;
-		this.props.completeTask(Date.now() - startTime, recordX, recordY, this.props.task.id, isTriggered);
+		if (this.props.taskIndex < this.props.totalTasks - 1) {
+			this.props.completeTask(Date.now() - startTime, recordX, recordY, this.props.task.id, isTriggered);
+			this.resetTaskState();
+		}
 		this.props.clickTarget();
-		this.resetTaskState();
 	}
 
 	record() {
