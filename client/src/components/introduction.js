@@ -26,7 +26,13 @@ class Introduction extends Component {
 	renderButton() {
 		const { slides, activeSlide } = this.state;
 		if (activeSlide < slides.length - 1) {
-			return (<Button onClick={()=>this.setState({ activeSlide: activeSlide + 1})}>Next</Button>);
+			return (
+				<Button 
+					style={{
+						marginLeft: '85%'}}
+						onClick={()=>this.setState({ activeSlide: activeSlide + 1})}>
+					Next
+				</Button>);
 		} else {
 			return (
 				<Button 
@@ -34,7 +40,8 @@ class Introduction extends Component {
 						this.props.changeExperimentState(actionType.EXPERIMENT);
 					}}
 					variant='contained' 
-					color='primary'>
+					color='secondary'
+					style={{marginLeft: '85%'}}>
 						Start
 				</Button>
 			);
@@ -51,10 +58,14 @@ class Introduction extends Component {
 					spacing={2}
 					direction="column"
 					alignItems="center"
-					style={{ minHeight: '100vh', marginTop:'40px' }}>
+					style={{ marginTop:'15%' }}>
 					<Paper style={{padding: '30px', width: '600px'}}>
-						{this.state.slides[this.state.activeSlide]()}
-						{this.renderButton()}
+						<Grid>
+							{this.state.slides[this.state.activeSlide]()}
+						</Grid>
+						<Grid>
+							{this.renderButton()}
+						</Grid>
 					</Paper>
 				</Grid>
 			</div>

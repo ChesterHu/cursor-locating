@@ -3,7 +3,8 @@ import React from 'react';
 export const slides = [
 	() => {
 		return (
-			<div>
+			<div
+				align='center'>
 				<h1> Where is my cursor? </h1>
 				<h3>HCI experiment on cursor locating techniques</h3>
 			</div>
@@ -16,19 +17,9 @@ export const slides = [
 				<h2>The problem</h2>
 				<ul>
 					<li>It is sometimes hard to find you cursor when the screen is light-colored or contain too many visual elements.</li>
-					<li>Let’s try this: move your cursor randomly on this (link to next) page, and keep track of your cursor.</li>
 				</ul>
+				<img src={require('./img/slide-img-sample.png')} />
 			</div>
-		);
-	},
-
-	(handleClick) => {
-		return (
-			<p>
-				Click
-				<button onClick={handleClick}> here </button>
-				to continue
-			</p>
 		);
 	},
 
