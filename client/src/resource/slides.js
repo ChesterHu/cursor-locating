@@ -78,7 +78,7 @@ export const slides = [
 				<h2>Now Please</h2>
 				<ul>
 					<li>We recommend using Chrome to run our experiment</li>
-					<li>Run you browser in full screen mode. (Press F11 if you are using Chrome)</li>
+					<li>Run you browser in full screen mode. (Press F11 if you are using Chrome, press Command + Shift + F if you are using macOS)</li>
 					<li>Set your page zoom to 100% (Press Ctrl + '+' or '-' to adjust)</li>
 					<li>We will disable your “real” cursor during the experiment. If the browser complains, please click “allow”</li>
 					<li>Please do not switch task during the experiment, as this will result in multiple cursor on the webpage</li>
