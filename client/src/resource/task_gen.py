@@ -13,7 +13,7 @@ images = [
 ]
 
 n_images = len(images)
-n_test_images = 2
+n_test_images = 0
 
 
 images_var_script = "export const images = [\n"
