@@ -13,6 +13,8 @@ images = [
 ]
 
 n_images = len(images)
+n_test_images = 2
+
 
 images_var_script = "export const images = [\n"
 for img in images:
@@ -25,14 +27,6 @@ settings = [
     'Shake'
 ]
 import random
-# start = [
-#     [(
-#         (random.randint(15, 250) / 1000), 
-#         (random.randint(15, 985) / 1000 + j) * 0.5
-#     ) for j in range(2)]
-#     for i in range(2)
-# ]
-
 
 def gen_rand_pos(i, j):
     while True:
@@ -68,7 +62,7 @@ def new_task(image, posi, posj, setting, info):
         + "\n}\n"
 
 
-ij_combinations = [(img, i, j) for img in range(n_images) for i in range(2) for j in range(2)]
+ij_combinations = [(img, i, j) for img in range(n_test_images) for i in range(2) for j in range(2)]
 
 random.shuffle(ij_combinations)
 ij_shuffle1 = ij_combinations[:]
@@ -81,7 +75,7 @@ sample_task_instruction = "This is a sample task, you may move your mouse around
  to 100% and run your brower in full screen mode. You should see the target at the certer of the screen."
 
 taskA_var_script = "export const taskA = ["
-taskA_var_script += new_task(6, 0, 0, 'None', sample_task_instruction + ' No pointer enhancement.')
+taskA_var_script += new_task(n_images-1, 0, 0, 'None', sample_task_instruction + ' No pointer enhancement.')
 taskA_var_script += ",\n"
 for img, i, j in ij_shuffle1:
     taskA_var_script += new_task(img, i, j, 'None', "There is no cursor enhancement in this task")
@@ -90,7 +84,7 @@ taskA_var_script += "]\n"
 
 
 taskB_var_script = "export const taskB = ["
-taskB_var_script += new_task(6, 0, 0, 'Ctrl', sample_task_instruction + ' Try pressing Ctrl.' )
+taskB_var_script += new_task(n_images-1, 0, 0, 'Ctrl', sample_task_instruction + ' Try pressing Ctrl.' )
 taskB_var_script += ",\n"
 for img, i, j in ij_shuffle2:
     taskB_var_script += new_task(img, i, j, 'Ctrl', "You may press Ctrl to magnify your cursor")
@@ -99,7 +93,7 @@ taskB_var_script += "]\n"
 
 
 taskC_var_script = "export const taskC = ["
-taskC_var_script += new_task(6, 0, 0, 'Shake', sample_task_instruction + ' Try shaking your cursor.')
+taskC_var_script += new_task(n_images-1, 0, 0, 'Shake', sample_task_instruction + ' Try shaking your cursor.')
 taskC_var_script += ",\n"
 for img, i, j in ij_shuffle3:
     taskC_var_script += new_task(img, i, j, 'Shake', "When you shake your cursor, it is magnified")
