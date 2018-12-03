@@ -9,11 +9,11 @@ images = [
     "https://crispher.github.io/pages/s24.jpg",
     "https://crispher.github.io/pages/s25.png",
     "https://crispher.github.io/pages/s26.jpg",
-    "https://crispher.github.io/pages/s11.jpg"
+    "https://crispher.github.io/pages/black.jpg"
 ]
 
 n_images = len(images)
-n_test_images = 0
+n_test_images = 6
 
 
 images_var_script = "export const images = [\n"
@@ -51,9 +51,10 @@ target = [
 ]
 
 
-def new_task(image, posi, posj, setting, info):
+def new_task(image, posi, posj, setting, info, sample=False):
+    sample_prefix = "sample-" if sample else ""
     return "{\n"\
-        + repr("id") +":" + repr(str(image)+"-"+str(posi)+"-"+str(posj)+"-"+setting)+",\n"\
+        + repr("id") +":" + repr(sample_prefix + str(image)+"-"+str(posi)+"-"+str(posj)+"-"+setting)+",\n"\
         + repr("image") + ":" + str(image) + ",\n"\
         + repr("info") + ":" + repr(info) + ",\n"\
         + repr("setting") + ":" + repr(setting) + ",\n"\
@@ -75,7 +76,7 @@ sample_task_instruction = "This is a sample task, you may move your mouse around
  to 100% and run your brower in full screen mode. You should see the target at the certer of the screen."
 
 taskA_var_script = "export const taskA = ["
-taskA_var_script += new_task(n_images-1, 0, 0, 'None', sample_task_instruction + ' No pointer enhancement.')
+taskA_var_script += new_task(n_images-1, 0, 0, 'None', sample_task_instruction + ' No pointer enhancement.', sample=True)
 taskA_var_script += ",\n"
 for img, i, j in ij_shuffle1:
     taskA_var_script += new_task(img, i, j, 'None', "There is no cursor enhancement in this task")
@@ -84,7 +85,7 @@ taskA_var_script += "]\n"
 
 
 taskB_var_script = "export const taskB = ["
-taskB_var_script += new_task(n_images-1, 0, 0, 'Ctrl', sample_task_instruction + ' Try pressing Ctrl.' )
+taskB_var_script += new_task(n_images-1, 0, 0, 'Ctrl', sample_task_instruction + ' Try pressing Ctrl.', sample=True)
 taskB_var_script += ",\n"
 for img, i, j in ij_shuffle2:
     taskB_var_script += new_task(img, i, j, 'Ctrl', "You may press Ctrl to magnify your cursor")
@@ -93,7 +94,7 @@ taskB_var_script += "]\n"
 
 
 taskC_var_script = "export const taskC = ["
-taskC_var_script += new_task(n_images-1, 0, 0, 'Shake', sample_task_instruction + ' Try shaking your cursor.')
+taskC_var_script += new_task(n_images-1, 0, 0, 'Shake', sample_task_instruction + ' Try shaking your cursor.', sample=True)
 taskC_var_script += ",\n"
 for img, i, j in ij_shuffle3:
     taskC_var_script += new_task(img, i, j, 'Shake', "When you shake your cursor, it is magnified")
