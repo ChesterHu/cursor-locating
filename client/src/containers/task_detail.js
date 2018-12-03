@@ -172,8 +172,8 @@ class TaskDetail extends Component {
 
 	handleTaskComplete() {
 		const { startTime, recordX, recordY, isTriggered } = this.state;
-		this.props.clickTarget();
 		this.props.completeTask(Date.now() - startTime, recordX, recordY, this.props.task.id, isTriggered);
+		this.props.clickTarget();
 		this.resetTaskState();
 	}
 
