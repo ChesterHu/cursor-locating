@@ -67,6 +67,7 @@ export const slides = [
 		return (
 			<div>
 				<h2>Settings (randomly shuffled)</h2>
+				<p>Note that in the experiment it is mandatory to use locating technique (whenever available) before moving pointer to the target, otherwise the task will not be counted as a record</p>
 				<img src={require('./img/slide-img-task.png')} />
 			</div>
 		);
