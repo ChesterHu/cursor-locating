@@ -20,7 +20,7 @@ class Questionnaire extends Component {
 			scoreCtrl: 1,
 			scoreShake: 1,
 			comment: '',
-			macShake: 'NA',
+			macShake: 'N/A',
 			submitted: false,
 		};
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -99,14 +99,14 @@ class Questionnaire extends Component {
 									{this.renderLevelSelect(this.state.scoreShake, (e)=>this.setState({scoreShake: e.target.value}), 5)}
 								</div>
 								<div className='form-item'>
-									<FormLabel component="legend">If you are using macOS, have you ever used the shaking to help you find the cursor?</FormLabel>
+									<FormLabel component="legend">If you are using macOS, have you ever trigger this feature?</FormLabel>
 									<RadioGroup 
 										aria-label='Device'
 										value={this.state.macShake}
 										onChange={e => this.setState({macShake: e.target.value})}
 										row
 									>
-										<FormControlLabel value='NA' control={<Radio color='primary' />} label='NA'/>
+										<FormControlLabel value='N/A' control={<Radio color='primary' />} label='N/A'/>
 										<FormControlLabel value='No' control={<Radio />} label='No'/>
 										<FormControlLabel value='Yes' control={<Radio />} label='Yes'/>
 									</RadioGroup>
