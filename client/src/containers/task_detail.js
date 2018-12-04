@@ -292,7 +292,7 @@ class TaskDetail extends Component {
 							}}
 							variant='contained' 
 							color='secondary' 
-							style={{marginLeft: '85%', marginBottom:'5%'}}>
+							style={{marginLeft: '85%', marginBottom:'2%'}}>
 							GO!
 						</Button>
 					}
