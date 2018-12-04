@@ -29,7 +29,8 @@ class Introduction extends Component {
 			return (
 				<Button 
 					style={{
-						backgroundColor: 'lightgreen',
+						backgroundColor: 'lightblue',
+						marginTop: '5%',
 						marginLeft: '85%'}}
 						onClick={()=>this.setState({ activeSlide: activeSlide + 1})}>
 					Next

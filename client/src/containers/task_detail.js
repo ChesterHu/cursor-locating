@@ -275,7 +275,7 @@ class TaskDetail extends Component {
 					<div>
 						<h3>Task {progress}</h3>
 						<p>{this.props.task.info}</p>
-						<p>Please press space to start the task</p>
+						{idPrefix != 'sample' && <p>Please press space to start the task</p> }
 						<img 
 							align='center'
 							src={image} 
@@ -292,7 +292,7 @@ class TaskDetail extends Component {
 							}}
 							variant='contained' 
 							color='secondary' 
-							style={{marginLeft: '85%'}}>
+							style={{marginLeft: '85%', marginBottom:'5%'}}>
 							GO!
 						</Button>
 					}
