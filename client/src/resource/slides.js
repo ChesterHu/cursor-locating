@@ -3,7 +3,9 @@ import React from 'react';
 export const slides = [
 	() => {
 		return (
-			<div
+			<div 
+				className='introduction'
+				key='slide1'
 				align='center'>
 				<h1> Where is my cursor? </h1>
 				<h3>HCI experiment on cursor locating techniques</h3>
@@ -17,7 +19,10 @@ export const slides = [
 
 	() => {
 		return (
-			<div>
+			<div
+				className='introduction'
+				key='slide2'
+				>
 				<h2>The problem</h2>
 				<ul>
 					<li>It is sometimes hard to find you cursor when the screen is light-colored or contains too many visual elements.</li>
@@ -30,7 +35,9 @@ export const slides = [
 
 	() => {
 		return (
-			<div>
+			<div
+				className='introduction'
+				key='slide3'>
 				<h2>Temporary Resizing</h2>
 				<p>MacOS introduced this feature to help with the problem: shaking and resizing (check it out if you’re using MacOS now)</p>
 				<img src={require('./img/slide-img-shake.png')}/>
@@ -40,7 +47,9 @@ export const slides = [
 
 	() => {
 		return (
-			<div>
+			<div
+				className='introduction'
+				key='slide4'>
 				<h2> Our Experiment </h2>
 				<ul>
 					<li>We aim to test whether such technique does help people find their cursor faster</li>
@@ -53,7 +62,9 @@ export const slides = [
 
 	() => {
 		return (
-			<div>
+			<div
+				className='introduction'
+				key='slide5'>
 				<h2>Experiment Tasks</h2>
 				<p>Our experiment consists of a series of pointing tasks, in each of these task:</p>
 				<ol type='1'>
@@ -69,7 +80,9 @@ export const slides = [
 
 	() => {
 		return (
-			<div>
+			<div
+				className='introduction'
+				key='slide6'>
 				<h2>Settings (randomly shuffled)</h2>
 				<p>Please use the provided technique at least once in each task</p>
 				<img src={require('./img/slide-img-task.png')} />
@@ -79,7 +92,9 @@ export const slides = [
 
 	() => {
 		return (
-			<div>
+			<div
+				className='introduction'
+				key='slide7'>
 				<h2>Now Please</h2>
 				<ul>
 					<li>We recommend using Chrome to run our experiment</li>
