@@ -275,7 +275,7 @@ class TaskDetail extends Component {
 					<div>
 						<h3>Task {progress}</h3>
 						<p>{this.props.task.info}</p>
-						{idPrefix != 'sample' && <p>Please press space to start the task</p> }
+						{idPrefix != 'sample' && <p>Please press <Button variant='contained' size='small'>space</Button> to start the task</p> }
 						<img 
 							align='center'
 							src={image} 
