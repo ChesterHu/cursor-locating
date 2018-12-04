@@ -59,7 +59,7 @@ class TaskDetail extends Component {
 	resetTaskState() {
 		document.addEventListener("keydown", this.handlePressSpace, false);
 		document.removeEventListener("keydown", this.handlePressCtrl, false);
-		document.onclick = () => {};
+		document.onclick = null;
 		clearInterval(this.zigzagRecordTimer);
 		clearInterval(this.clearRecordCacheTimer);
 		clearInterval(this.recordTimer);
