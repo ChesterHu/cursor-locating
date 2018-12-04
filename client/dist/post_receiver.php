@@ -12,8 +12,8 @@ if ( !file_exists($dir) ) {
 
         $requestBody = file_get_contents('php://input');
         $dec = json_decode($requestBody) or die ("could not decode json.");
-        $dict = $dec->{'userInfo'};
-        $filename = 'rd' . hash('ripemd160', $dict->name);
+        // $dict = $dec->{'userInfo'};
+        $filename = 'rd_' . hash('ripemd160', $dec);
         file_put_contents($dir . $filename . '.log', file_get_contents('php://input'));
         ?>
     </body>
