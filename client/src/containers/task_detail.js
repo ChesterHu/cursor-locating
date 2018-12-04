@@ -43,6 +43,7 @@ class TaskDetail extends Component {
 		this.state = {
 			taskStarted: false,
 			animationOn: false,
+			experimentEnd: false,
 		};
 		this.handleMouseMove = this.handleMouseMove.bind(this);
 		this.handlePressSpace = this.handlePressSpace.bind(this);
@@ -58,6 +59,7 @@ class TaskDetail extends Component {
 	
 	componentWillUnmount() {
 		document.removeEventListener("keydown", this.handlePressSpace, false);
+		this.resetTaskState();
 	}
 
 	resetTaskState() {
@@ -180,16 +182,19 @@ class TaskDetail extends Component {
 		document.removeEventListener("keydown", this.handlePressSpace, false);
 		const { startTime, recordX, recordY, isTriggered } = this.state;
 		this.props.completeTask(Date.now() - startTime, recordX, recordY, this.props.task.id, isTriggered);
+		this.props.clickTarget();
 		const { taskIndex, totalTasks, task } = this.props;
 		if (taskIndex < totalTasks) {
 			this.resetTaskState();
 			const idPrefix = task.id.substr(0, 6);
-			if (idPrefix != 'sample' && taskIndex < totalTasks - 1) {
+			if (idPrefix != 'sample' && !this.state.experimentEnd) {
 				document.addEventListener("keydown", this.handlePressSpace, false);
+			}
+			if (taskIndex === totalTasks - 1) {
+				this.setState({experimentEnd: true});
 			}
 			document.removeEventListener("keydown", this.handlePressCtrl, false);
 		}
-		this.props.clickTarget();
 	}
 
 	record() {
