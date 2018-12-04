@@ -63,7 +63,10 @@ class Questionnaire extends Component {
 					alignItems="center"
 					style={{ minHeight: '100vh', marginTop:'40px' }}
 				>
-					<Paper style={{padding:'30px'}}>
+					<Paper 
+						key='questions'
+						className='questionnaire'
+						style={{padding:'30px'}}>
 						{!this.state.submitted && 	
 							<form onSubmit={this.handleSubmit}>
 								<h2>Questionnaire</h2>
@@ -131,12 +134,14 @@ class Questionnaire extends Component {
 									<Button type='submit' variant='contained' color='secondary'>Submit</Button>
 								</div>
 							</form>}
-							{
-								this.state.submitted && 
-								<div align='center'>
-									<h1> Thank You! </h1>
-									<p> Your data has been recorded </p>
-								</div>
+							{this.state.submitted && 
+							<div 
+								key='thank-you'
+								className='questionnaire'
+								align='center'>
+								<h1> Thank You! </h1>
+								<p> Your data has been recorded </p>
+							</div>
 							}
 					</Paper>
 				</Grid>
