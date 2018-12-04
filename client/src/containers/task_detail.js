@@ -8,6 +8,10 @@ import Paper from '@material-ui/core/Paper';
 import Target from '../components/target';
 import { clickTarget, completeTask } from '../actions/index';
 
+import ImageCtrl from '../resource/img/ctrl.png';
+import ImageNone from '../resource/img/none.png';
+import ImageShake from '../resource/img/shake.png';
+
 const TASK_BOARD_WIDTH = screen.width;
 const TASK_BOARD_HEIGHT = screen.height;
 const ZIGZAG_RECORD_TIME = 100;
@@ -57,7 +61,10 @@ class TaskDetail extends Component {
 	}
 
 	resetTaskState() {
-		document.addEventListener("keydown", this.handlePressSpace, false);
+		const idPrefix = this.props.task.id.substr(0, 6);
+		if (idPrefix != 'sample') {
+			document.addEventListener("keydown", this.handlePressSpace, false);
+		}
 		document.removeEventListener("keydown", this.handlePressCtrl, false);
 		document.onclick = null;
 		clearInterval(this.zigzagRecordTimer);
@@ -235,9 +242,21 @@ class TaskDetail extends Component {
 	}
 
 	renderCover() {
-		const { taskIndex, totalTasks } = this.props;
+		const { taskIndex, totalTasks, task } = this.props;
 		const progress = `${taskIndex + 1} / ${totalTasks}`;
-
+		const idPrefix = task.id.substr(0, 6);
+		const idSuffix = task.id.substr(-4);
+		if (idPrefix === 'sample') {
+			exitPointerLock()
+		}
+		let image = null;
+		if (idSuffix === 'None') {
+			image = ImageNone;
+		} else if (idSuffix === 'Ctrl') {
+			image = ImageCtrl;
+		} else {
+			image = ImageShake;
+		}
 		return (
 			<div key={progress} className='task-cover'>
 				<Paper
@@ -246,10 +265,31 @@ class TaskDetail extends Component {
 					style={{		
 						margin: '20px',
 						padding: '10px',
-						width: '600px'}}> 
-					<h3>Task {progress}</h3>
-					<p>{this.props.task.info}</p>
-					<p>Please press space to start the task</p>
+						width: '600px'}}>
+					<div>
+						<h3>Task {progress}</h3>
+						<p>{this.props.task.info}</p>
+						<p>Please press space to start the task</p>
+						<img 
+							align='center'
+							src={image} 
+							style={{
+								marginLeft: '30%',
+								width: '30%', 
+								height: '30%'}}/>
+					</div>
+					{idPrefix === 'sample' && 	
+						<Button 
+							onClick={() => {
+								this.startTask();
+								this.lockPointer();
+							}}
+							variant='contained' 
+							color='secondary' 
+							style={{marginLeft: '85%'}}>
+							GO!
+						</Button>
+					}
 				</Paper>
 				<Target />
 			</div>
