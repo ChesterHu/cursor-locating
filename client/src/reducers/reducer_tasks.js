@@ -1,4 +1,4 @@
-import { tasks } from '../resource/tasks_pygen_grouped_test';
+import { tasks } from '../resource/tasks_pygen_grouped_test_sample_only';
 
 const orders = [
 	[0, 1, 2],

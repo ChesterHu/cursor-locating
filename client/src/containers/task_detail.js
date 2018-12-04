@@ -61,12 +61,6 @@ class TaskDetail extends Component {
 	}
 
 	resetTaskState() {
-		const idPrefix = this.props.task.id.substr(0, 6);
-		if (idPrefix != 'sample') {
-			document.addEventListener("keydown", this.handlePressSpace, false);
-		}
-		document.removeEventListener("keydown", this.handlePressCtrl, false);
-		document.onclick = null;
 		clearInterval(this.zigzagRecordTimer);
 		clearInterval(this.clearRecordCacheTimer);
 		clearInterval(this.recordTimer);
@@ -182,11 +176,18 @@ class TaskDetail extends Component {
 	}
 
 	handleTaskComplete() {
+		document.onclick = null;
 		document.removeEventListener("keydown", this.handlePressSpace, false);
 		const { startTime, recordX, recordY, isTriggered } = this.state;
-		if (this.props.taskIndex < this.props.totalTasks - 1) {
-			this.props.completeTask(Date.now() - startTime, recordX, recordY, this.props.task.id, isTriggered);
+		this.props.completeTask(Date.now() - startTime, recordX, recordY, this.props.task.id, isTriggered);
+		const { taskIndex, totalTasks, task } = this.props;
+		if (taskIndex < totalTasks) {
 			this.resetTaskState();
+			const idPrefix = task.id.substr(0, 6);
+			if (idPrefix != 'sample' && taskIndex < totalTasks - 1) {
+				document.addEventListener("keydown", this.handlePressSpace, false);
+			}
+			document.removeEventListener("keydown", this.handlePressCtrl, false);
 		}
 		this.props.clickTarget();
 	}
@@ -319,7 +320,8 @@ class TaskDetail extends Component {
 	render() {
 		const { dummyMouseX, dummyMouseY } = this.state;
 		return ( 
-			<div 
+			<div
+				key='task-board'
 				id='task-board'
 				onMouseMove={this.handleMouseMove}>
 				{this.state.taskStarted ? this.renderTask() : this.renderCover()}
@@ -329,14 +331,12 @@ class TaskDetail extends Component {
 }
 
 function mapStateToProps({ tasks, activeTask, images }) {
-	if (activeTask < tasks.length) {
-		return {
-			task: tasks[activeTask],
-			taskIndex: activeTask,
-			totalTasks: tasks.length,
-			images,
-		};
-	}
+	return {
+		task: activeTask < tasks.length ? tasks[activeTask] : null,
+		taskIndex: activeTask,
+		totalTasks: tasks.length,
+		images,
+	};
 }
 
 function mapDispatchToProps(dispatch) {
