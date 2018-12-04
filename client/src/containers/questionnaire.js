@@ -65,7 +65,7 @@ class Questionnaire extends Component {
 					<Paper style={{padding:'30px'}}>
 						{!this.state.submitted && 	
 							<form onSubmit={this.handleSubmit}>
-								<h3>Final submit form</h3>
+								<h2>Questionnaire</h2>
 								<div className='form-item'>
 									<TextField
 										id='name'
@@ -87,11 +87,11 @@ class Questionnaire extends Component {
 									</RadioGroup>
 								</div>
 								<div className='form-item'>
-									<FormLabel component="legend">Please rate your experience of Ctrl Key</FormLabel>
+									<FormLabel component="legend">Do you agree Ctrl Key helped you find the cursor faster?(1: strong disagree, 5: strong agree)</FormLabel>
 									{this.renderLevelSelect(this.state.scoreCtrl, (e)=>this.setState({scoreCtrl: e.target.value}), 5)}
 								</div>
 								<div className='form-item'>
-									<FormLabel component="legend">Please rate your experience of Shake</FormLabel>
+									<FormLabel component="legend">Do you agree Shaking helped you find the cursor faster?(1: strong disagree, 5: strong agree)</FormLabel>
 									{this.renderLevelSelect(this.state.scoreShake, (e)=>this.setState({scoreShake: e.target.value}), 5)}
 								</div>
 								<div className='form-item'>
