@@ -13,6 +13,5 @@ const order = orders[Math.floor(Math.random() * orders.length)];
 const task = [tasks[order[0]], tasks[order[1]], tasks[order[2]]];
 
 export default function() {
-	const temp = [...task[0], ...task[1], ...task[2]];
 	return [...task[0], ...task[1], ...task[2]];
 }
