@@ -14,6 +14,8 @@ library(ez)
 library(apa)
 library(base)
 library(ggplot2)
+library(gmodels)
+library(Rmisc)
 ```
 # Preparing data
 ## Loading data
@@ -26,8 +28,8 @@ names(data) = c('participant', 'start', 'target', 'tech', 'time')
 plot time used with different techniques and background image
 ```{r}
 ggplot() + 
-  geom_jitter(aes(interaction(tech,target), time), data = data, colour = I("red"), position = position_jitter(width = 0.05)) + 
-  scale_y_continuous(limits = c(1000, 10000)) + 
+  geom_jitter(aes(interaction(tech), time), data = data, colour = I("red"), position = position_jitter(width = 0.05)) + 
+  scale_y_continuous(limits = c(1000, 20000)) + 
   theme(panel.background = element_blank(),
         panel.grid.major.y = element_line(size = .1, color = 'grey'))
 ```
@@ -35,12 +37,11 @@ ggplot() +
 Filter outliers
 ```{r}
 dataFilt = data %>%
-  group_by(tech, target) %>%
   filter(!abs(time - mean(time)) > 3 * sd(time))
 
 ggplot() + 
-  geom_jitter(aes(interaction(tech,target), time), data = data, colour = I("red"), position = position_jitter(width = 0.05)) + 
-  scale_y_continuous(limits = c(1000, 10000)) + 
+  geom_jitter(aes(interaction(tech), time), data = data, colour = I("red"), position = position_jitter(width = 0.05)) + 
+  scale_y_continuous(limits = c(1000, 13000)) + 
   theme(panel.background = element_blank(),
         panel.grid.major.y = element_line(size = .1, color = 'grey'))
 ```
@@ -49,13 +50,31 @@ ggplot() +
 Convert data using the long format
 ```{r}
 dataAggr = dataFilt %>%
-  group_by(participant, tech, target) %>%
+  group_by(participant, tech) %>%
   summarise(time = mean(time))
 
-dataLong = melt(data, id = c("participant", "tech", "target", "time"))
+dataLong = melt(dataAggr, id = c("participant", "tech", "time"))
 ```
 
 Indicate what are the independent variables(factors)
 ```{r}
 dataLong$tech = factor(dataLong$tech)
+```
+
+```{r}
+results = ezANOVA(dataLong, dv=.(time), wid=.(participant), within=.(tech), detailed=TRUE)
+```
+Analyze mean time for different techniques
+```{r}
+kable(aggregate(time ~ tech, dataLong, mean))
+```
+
+
+```{r}
+dataSummary = summarySE(dataFilt, measurevar = 'time', groupvars = 'tech')
+
+ggplot(dataSummary, aes(x = tech, y = time, fill=tech)) + 
+  geom_bar(stat='identity', width=0.5, color="black", position=position_dodge()) + 
+  geom_errorbar(aes(ymin=time-ci, ymax=time+ci), width=.2, position=position_dodge()) + 
+  labs(title="Time(ms) for Move", x = "Techniques", y = "Time(ms)")
 ```
