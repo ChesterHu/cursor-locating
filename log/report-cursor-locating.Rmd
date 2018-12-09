@@ -8,14 +8,12 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
-library(dplyr)
-library(reshape)
 library(ez)
 library(apa)
 library(base)
 library(ggplot2)
-library(gmodels)
-library(Rmisc)
+library(dplyr)
+library(reshape)
 ```
 # Preparing data
 ## Loading data
@@ -37,10 +35,11 @@ ggplot() +
 Filter outliers
 ```{r}
 dataFilt = data %>%
+  group_by(tech) %>%
   filter(!abs(time - mean(time)) > 3 * sd(time))
 
 ggplot() + 
-  geom_jitter(aes(interaction(tech), time), data = data, colour = I("red"), position = position_jitter(width = 0.05)) + 
+  geom_jitter(aes(interaction(tech), time), data = dataFilt, colour = I("red"), position = position_jitter(width = 0.05)) + 
   scale_y_continuous(limits = c(1000, 13000)) + 
   theme(panel.background = element_blank(),
         panel.grid.major.y = element_line(size = .1, color = 'grey'))
@@ -63,14 +62,49 @@ dataLong$tech = factor(dataLong$tech)
 
 ```{r}
 results = ezANOVA(dataLong, dv=.(time), wid=.(participant), within=.(tech), detailed=TRUE)
+kable(results$ANOVA)
 ```
 Analyze mean time for different techniques
 ```{r}
 kable(aggregate(time ~ tech, dataLong, mean))
 ```
 
+# Analyze distance for different techniques
+## Load data
+```{r}
+data = read.csv('distance.csv', header=FALSE, stringsAsFactors = FALSE)
+names = names(data) = c('participant', 'start', 'target', 'tech', 'distanceRatio')
+```
+
+## Plot
+```{r}
+dataFilt = data %>%
+  group_by(tech) %>%
+  filter(!abs(distanceRatio - mean(distanceRatio)) > 3 * sd(distanceRatio) & tech != " Ctrl" )
+
+ggplot() + 
+  geom_jitter(aes(interaction(tech), distanceRatio), data = dataFilt, colour = I("red"), position = position_jitter(width = 0.05)) + 
+  scale_y_continuous(limits = c(1,7.5)) + 
+  theme(panel.background = element_blank(),
+        panel.grid.major.y = element_line(size = .1, color = 'grey'))
+```
+```{r}
+dataAggr = dataFilt %>%
+  group_by(participant, tech) %>%
+  summarise(distanceRatio = mean(distanceRatio))
+
+dataLong = melt(dataAggr, id = c("participant", "tech", "distanceRatio"))
+dataLong$tech = factor(dataLong$tech)
+results = ezANOVA(dataLong, dv=.(distanceRatio), wid=.(participant), within=.(tech), detailed=TRUE)
+kable(results$ANOVA)
+```
 
 ```{r}
+
+```
+
+```{r}
+library(Rmisc)
 dataSummary = summarySE(dataFilt, measurevar = 'time', groupvars = 'tech')
 
 ggplot(dataSummary, aes(x = tech, y = time, fill=tech)) + 
