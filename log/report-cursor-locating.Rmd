@@ -1,0 +1,61 @@
+---
+title: "report-cursor-locationg"
+output: 
+  html_document:
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+library(dplyr)
+library(reshape)
+library(ez)
+library(apa)
+library(base)
+library(ggplot2)
+```
+# Preparing data
+## Loading data
+```{r}
+data = read.csv(file = 'time.csv',  header = FALSE)
+names(data) = c('participant', 'start', 'target', 'tech', 'time')
+```
+
+## Evaluation
+plot time used with different techniques and background image
+```{r}
+ggplot() + 
+  geom_jitter(aes(interaction(tech,target), time), data = data, colour = I("red"), position = position_jitter(width = 0.05)) + 
+  scale_y_continuous(limits = c(1000, 10000)) + 
+  theme(panel.background = element_blank(),
+        panel.grid.major.y = element_line(size = .1, color = 'grey'))
+```
+
+Filter outliers
+```{r}
+dataFilt = data %>%
+  group_by(tech, target) %>%
+  filter(!abs(time - mean(time)) > 3 * sd(time))
+
+ggplot() + 
+  geom_jitter(aes(interaction(tech,target), time), data = data, colour = I("red"), position = position_jitter(width = 0.05)) + 
+  scale_y_continuous(limits = c(1000, 10000)) + 
+  theme(panel.background = element_blank(),
+        panel.grid.major.y = element_line(size = .1, color = 'grey'))
+```
+
+## Run ANOVA on movement time
+Convert data using the long format
+```{r}
+dataAggr = dataFilt %>%
+  group_by(participant, tech, target) %>%
+  summarise(time = mean(time))
+
+dataLong = melt(data, id = c("participant", "tech", "target", "time"))
+```
+
+Indicate what are the independent variables(factors)
+```{r}
+dataLong$tech = factor(dataLong$tech)
+```
