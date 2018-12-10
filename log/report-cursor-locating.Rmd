@@ -78,10 +78,6 @@ detach(dataLong)
 kable(pw$p.value)
 ```
 
-```{r}
-kable(aggregate( time~tech, dataLong, mean ))
-```
-
 
 ```{r}
 library(Rmisc)
