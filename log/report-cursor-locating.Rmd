@@ -15,56 +15,62 @@ library(ggplot2)
 library(dplyr)
 library(reshape)
 ```
-# Preparing data
+# Compare completion time among three settings
+In this section, we test whether two visual enhancement techniques have significant impact to the completion time.
 ## Loading data
+Variable "start" represents starting position of mouse pointer. 
 ```{r}
-data = read.csv(file = 'time.csv',  header = FALSE)
-names(data) = c('participant', 'start', 'target', 'tech', 'time')
+dataTime = read.csv(file = 'time.csv',  header = FALSE)
+names(dataTime) = c('participant', 'start', 'target', 'tech', 'time')
 ```
 
 ## Evaluation
-plot time used with different techniques and background image
+Through a quick scan of the raw data, we find some outliers. May be some participants failed to find the target during tasks or they are distracted. Before evaluating the data, we exclude outliers and plot the raw data from 12 participants.
 ```{r}
-ggplot() + 
-  geom_jitter(aes(interaction(tech), time), data = data, colour = I("red"), position = position_jitter(width = 0.05)) + 
-  scale_y_continuous(limits = c(1000, 7500)) + 
-  theme(panel.background = element_blank(),
-        panel.grid.major.y = element_line(size = .1, color = 'grey'))
-```
-
-Filter outliers
-```{r}
-dataFilt = data %>%
+dataTimeFilt = dataTime %>%
   group_by(tech) %>%
   filter(!abs(time - mean(time)) > 3 * sd(time))
 
 ggplot() + 
-  geom_jitter(aes(interaction(tech), time), data = dataFilt, colour = I("red"), position = position_jitter(width = 0.05)) + 
-  scale_y_continuous(limits = c(1000, 5000)) + 
+  geom_jitter(aes(interaction(tech), time), data = dataTimeFilt, colour = I("red"), position = position_jitter(width = 0.05)) + 
+  scale_y_continuous(limits = c(1000, 6000)) + 
   theme(panel.background = element_blank(),
         panel.grid.major.y = element_line(size = .1, color = 'grey'))
 ```
 
 ## Run ANOVA on movement time
-Convert data using the long format
+All trials are successfully recorded so there is no need for fitering. Since measuring performance in different background images and starting positions is not the concern of this poject, we aggregate the data by participant and tech.
 ```{r}
-dataAggr = dataFilt %>%
+dataTimeAggr = dataTimeFilt %>%
   group_by(participant, tech) %>%
   summarise(time = mean(time))
 
-dataLong = melt(dataAggr, id = c("participant", "tech", "time"))
+# Convert the data using long format
+dataTimeLong = melt(dataTimeAggr, id = c("participant", "tech", "time"))
 ```
 
-Indicate what are the independent variables(factors)
+Indicate the independent variables (visual enhancement techniques)
 ```{r}
-dataLong$tech = factor(dataLong$tech)
+dataTimeLong$tech = factor(dataTimeLong$tech)
 ```
 
+Each participant uses all three techniques, we use repeated-measures ANOVA
 ```{r}
-results = ezANOVA(dataLong, dv=.(time), wid=.(participant), within=.(tech), detailed=TRUE)
-kable(results$ANOVA)
+resultsTime = ezANOVA(dataTimeLong, dv=.(time), wid=.(participant), within=.(tech), detailed=TRUE)
+kable(resultsTime$ANOVA)
 ```
-## Post-hoc analysis
+More results from ANOVA
+```{r}
+kable(resultsTime$`Mauchly's Test for Sphericity`)
+kable(resultsTime$`Sphericity Corrections`)
+kable(anova_apa(resultsTime, sph_corr ="gg", print=FALSE))
+```
+Present some stats of the data
+```{r}
+kable(ezStats(dataTimeLong, dv=.(time), wid=.(participant), within=.(tech)))
+```
+## Interpretation of ANOVA
+ANOVA shows there is no significant effect of visual enhancement techniques ($F_{2, 22}=2.4908, p = 0.1059, > 0.05, \eta_{p}^2=0.0689$) on completion time. The average completion time is 2183ms for Ctrl-and-resizing, 2234ms for shaking-and-resizing and 2011ms for no visual enhancement.
 
 Analyze mean time for different techniques
 ```{r}
