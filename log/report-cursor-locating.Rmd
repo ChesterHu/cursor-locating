@@ -27,7 +27,7 @@ plot time used with different techniques and background image
 ```{r}
 ggplot() + 
   geom_jitter(aes(interaction(tech), time), data = data, colour = I("red"), position = position_jitter(width = 0.05)) + 
-  scale_y_continuous(limits = c(1000, 20000)) + 
+  scale_y_continuous(limits = c(1000, 7500)) + 
   theme(panel.background = element_blank(),
         panel.grid.major.y = element_line(size = .1, color = 'grey'))
 ```
@@ -40,7 +40,7 @@ dataFilt = data %>%
 
 ggplot() + 
   geom_jitter(aes(interaction(tech), time), data = dataFilt, colour = I("red"), position = position_jitter(width = 0.05)) + 
-  scale_y_continuous(limits = c(1000, 13000)) + 
+  scale_y_continuous(limits = c(1000, 5000)) + 
   theme(panel.background = element_blank(),
         panel.grid.major.y = element_line(size = .1, color = 'grey'))
 ```
@@ -64,10 +64,36 @@ dataLong$tech = factor(dataLong$tech)
 results = ezANOVA(dataLong, dv=.(time), wid=.(participant), within=.(tech), detailed=TRUE)
 kable(results$ANOVA)
 ```
+## Post-hoc analysis
+
 Analyze mean time for different techniques
 ```{r}
 kable(aggregate(time ~ tech, dataLong, mean))
 ```
+
+```{r}
+attach(dataLong)
+pw <- pairwise.t.test(time, interaction(tech), p.adj = "bonferroni")
+detach(dataLong)
+kable(pw$p.value)
+```
+
+```{r}
+kable(aggregate( time~tech, dataLong, mean ))
+```
+
+
+```{r}
+library(Rmisc)
+dataSummary = summarySE(dataFilt, measurevar = 'time', groupvars = 'tech')
+
+p = ggplot(dataSummary, aes(x = tech, y = time, fill=tech)) + 
+  geom_bar(stat='identity', width=0.5, color="black", position=position_dodge()) + 
+  geom_errorbar(aes(ymin=time-ci, ymax=time+ci), width=.2, position=position_dodge()) + 
+  labs(title="Time(ms) for Move", x = "Techniques", y = "Time(ms)")
+print(p)
+```
+
 
 # Analyze distance for different techniques
 ## Load data
@@ -80,14 +106,16 @@ names = names(data) = c('participant', 'start', 'target', 'tech', 'distanceRatio
 ```{r}
 dataFilt = data %>%
   group_by(tech) %>%
-  filter(!abs(distanceRatio - mean(distanceRatio)) > 3 * sd(distanceRatio) & tech != " Ctrl" )
+  filter(!abs(distanceRatio - mean(distanceRatio)) > 3 * sd(distanceRatio))
 
 ggplot() + 
   geom_jitter(aes(interaction(tech), distanceRatio), data = dataFilt, colour = I("red"), position = position_jitter(width = 0.05)) + 
-  scale_y_continuous(limits = c(1,7.5)) + 
+  scale_y_continuous(limits = c(0,7.5)) + 
   theme(panel.background = element_blank(),
         panel.grid.major.y = element_line(size = .1, color = 'grey'))
 ```
+
+
 ```{r}
 dataAggr = dataFilt %>%
   group_by(participant, tech) %>%
@@ -98,17 +126,29 @@ dataLong$tech = factor(dataLong$tech)
 results = ezANOVA(dataLong, dv=.(distanceRatio), wid=.(participant), within=.(tech), detailed=TRUE)
 kable(results$ANOVA)
 ```
+## Post-hoc analysis
 
+Analyze distance ratio for different techniques
 ```{r}
-
+kable(aggregate(distanceRatio ~ tech, dataLong, mean))
 ```
 
 ```{r}
+attach(dataLong)
+pw <- pairwise.t.test(distanceRatio, interaction(tech), p.adj = "bonferroni")
+detach(dataLong)
+kable(pw$p.value)
+```
+
+
+```{r}
+# Don't run this before analysis is done, it will mask other function
 library(Rmisc)
-dataSummary = summarySE(dataFilt, measurevar = 'time', groupvars = 'tech')
-
-ggplot(dataSummary, aes(x = tech, y = time, fill=tech)) + 
+dataSummary = summarySE(dataFilt, measurevar = 'distanceRatio', groupvars = 'tech')
+p = ggplot(dataSummary, aes(x = tech, y = distanceRatio, fill=tech)) + 
   geom_bar(stat='identity', width=0.5, color="black", position=position_dodge()) + 
-  geom_errorbar(aes(ymin=time-ci, ymax=time+ci), width=.2, position=position_dodge()) + 
-  labs(title="Time(ms) for Move", x = "Techniques", y = "Time(ms)")
+  geom_errorbar(aes(ymin=distanceRatio-ci, ymax=distanceRatio+ci), width=.2, position=position_dodge()) + 
+  labs(title="Distance Ratio", x = "Techniques", y = "Distance Ratio")
+print(p)
 ```
+
