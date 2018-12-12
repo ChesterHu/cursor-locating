@@ -1,5 +1,5 @@
 ---
-title: "report-cursor-locationg"
+title: "Controlled Experiment on Different Mouse Pointer LocatingTechniques"
 output: 
   html_document:
     number_sections: true
@@ -71,9 +71,6 @@ kable(ezStats(dataTimeLong, dv=.(time), wid=.(participant), within=.(tech)))
 ```
 ## Interpretation of ANOVA
 ANOVA shows there is no significant effect of visual enhancement techniques ($F_{2, 22}=2.4908, p = 0.1059, > 0.05, \eta_{p}^2=0.18$) on completion time. The average completion time is 2183ms for Ctrl-and-resizing, 2234ms for shaking-and-resizing and 2011ms for no visual enhancement. Mauchly’s Test for Sphericity is not statistically significant ($p = 0.7641$), we can't reject the null hypothesis that variance of the differences are equal.
-
-## Some other analysis
-
 
 
 # Analyze whether visual enhancement has significant impact to distance ratio
